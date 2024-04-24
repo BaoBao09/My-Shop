@@ -1,1 +1,77 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('~assets/admin/css/icons/tabler-icons/tabler-icons.css');
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+.left-sidebar{
+    float: left;
+    width: 270px;
+    background-color: #fff;
+    position: absolute;
+    -webkit-transition: 0.2s ease-in;
+    transition: 0.2s ease-in;
+    height: 100%;
+    z-index: 11;
+    border-right: 1px solid rgb(229, 234, 239);
+}
+.brand-logo {
+    min-height: 70px;
+    padding: 0 24px
+}
+.align-items-center {
+    -webkit-box-align: center !important;
+    -ms-flex-align: center !important;
+    align-items: center !important;
+}
+.justify-content-between {
+    -webkit-box-pack: justify !important;
+    -ms-flex-pack: justify !important;
+    justify-content: space-between !important;
+}
+.left-sidebar .scroll-sidebar {
+    overflow-y: auto;
+    height: calc(100vh - 80px);
+    border-radius: 7px;
+}
+.left-sidebar .scroll-sidebar {
+    overflow-y: auto;
+    height: calc(100vh - 80px);
+    border-radius: 7px;
+}
+.d-flex {
+    display: -webkit-box !important;
+    display: -ms-flexbox !important;
+    display: flex !important;
+}
+#sidebarnav{
+    padding: 20px;
+}
+.sidebar-item{
+    height: 60px;
+    padding: 20px;
+    color: black;
+    transition: linear 0.3s;
+    border-radius: 4px;
+}
+.sidebar-link{
+    color: black;
+}
+.sidebar-item-active{
+    background-color: rgba(93, 135, 255, 0.8)
+}
+.sidebar-item:hover .sidebar-link{
+    color: rgb(93, 135, 255)
+}
+.sidebar-item:hover {
+    background-color: rgba(93, 135, 255, 0.4) !important;
+    cursor: pointer;
+    
+}
+
+.nav-item :hover{
+    cursor: pointer;
+}
+.dropdown-menu{
+    left: auto;
+    right: 0px;
+}
