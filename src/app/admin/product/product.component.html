@@ -1,1 +1,144 @@
-<p>product works!</p>
+<div class="container-fluid">
+    <h5 class="card-title fw-semibold mb-4">Quản Lý Sản Phẩm</h5>
+    <div class="card">
+        <div class="card-body">
+            <form>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label for="disabledSelect" class="form-label">Loại sản phẩm</label>
+                        <select id="disabledSelect" class="form-select">
+                            <option>L1</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="disabledSelect" class="form-label">Thương hiệu</label>
+                        <select id="disabledSelect" class="form-select">
+                            <option>TH1</option>
+                        </select>
+                    </div>
+                    <div class=" col-lg-6">
+                        <label for="exampleInputEmail1" class="form-label">Tên sản phẩm</label>
+                        <input formControlName="tenSanPham" type="email" class="form-control">
+                    </div>
+                </div>
+            </form>
+            <button class="btn btn-primary btn-seach">Tìm Kiếm</button>
+        </div>
+
+    </div>
+    <div class="pull-right no-margin">
+        <a (click)="createModal()" class="btn btn-success btn-xs">
+            <i class="fa fa-plus"></i>&nbsp;Thêm
+        </a>
+    </div>
+    <div class="row" style="clear: both;">
+        <div class="col-lg-12 d-flex align-items-stretch">
+            <div class="card w-100">
+                <div class="card-body p-4">
+                    <div class="table-responsive">
+                        <table class="table text-nowrap mb-0 align-middle">
+                            <thead class="text-dark fs-4">
+                                <tr>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Id</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Assigned</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Name</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Priority</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Tác vụ</h6>
+                                    </th>
+                                    <th class="border-bottom-0" style="width: 160px;">
+                                        <h6 class="fw-semibold mb-0">Tác vụ</h6>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let hero of items">
+                                    <td class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">1</h6>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-1">{{hero}}</h6>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">Elite Admin</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge bg-primary rounded-3 fw-semibold">Low</span>
+                                        </div>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-1">$3.9</h6>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <button (click)="createModal()"
+                                                    class="badge bg-primary rounded-3 fw-semibold">Sửa</button>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <button class="badge bg-danger rounded-3 fw-semibold">Xóa</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <ngb-pagination [collectionSize]="totalItems" [(page)]="currentPage" [pageSize]="pageSize" [maxSize]="5"
+                    class="pagination-ct" (pageChange)="loadPage($event)">
+                </ngb-pagination>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="showUpdateModal" id="createUserModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sl full-height-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 *ngIf="isCreate" class="modal-title">Nhập thông tin học viên</h4>
+                    <h4 *ngIf="!isCreate" class="modal-title">Sửa thông tin học viên</h4>
+                </div>
+                <form class="modal-form">
+                    <div class="row">
+                        <div class=" col-lg-4">
+                            <label for="exampleInputEmail1" class="form-label">Email address</label>
+                            <input type="text" class="form-control" id="exampleInputEmail1"
+                                aria-describedby="emailHelp">
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="exampleInputPassword1" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1">
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="disabledSelect" class="form-label">Disabled select menu</label>
+                            <select id="disabledSelect" class="form-select">
+                                <option>Disabled select</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                    </div>
+
+                </form>
+                <div class="modal-footer">
+                    <div class="modal-btn">
+                        <button class="btn btn-danger" (click)="closeModal('createUserModal')">Hủy</button>
+                        <button class="btn btn-primary">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

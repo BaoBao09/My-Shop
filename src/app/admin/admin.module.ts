@@ -9,7 +9,8 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { ProductComponent } from './product/product.component';
 import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './home/home.component';
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -20,11 +21,14 @@ import { HomeComponent } from './home/home.component';
     AdminComponent,
     LayoutComponent,
     HomeComponent,
+    ProductComponent,
+    LoginComponent
   ],
   imports: [
     CommonModule,
     BrowserModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    NgbModule
   ]
 })
 export class AdminModule { }
