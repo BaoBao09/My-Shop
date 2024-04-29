@@ -121,7 +121,7 @@ a{
     color: #5A6A85;
     background-color: transparent;
     background-clip: padding-box;
-    border: var(--bs-border-width) solid #DFE5EF;
+    border: 1px solid #DFE5EF;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -138,7 +138,7 @@ a{
     -webkit-box-flex: 1;
     -ms-flex: 1 1 auto;
     flex: 1 1 auto;
-    min-width: 0;
+    min-width: 300px;
     height: 40px;
     background-color: #e8f0fe;
     border: none;
@@ -216,6 +216,9 @@ a{
 .modal-btn button{
     margin: 20px 10px;
     width: 120px;
+}
+.invalid-form{
+    color: red;
 }
 @media (min-width: 1200px) {
     #main-wrapper[data-layout=vertical][data-header-position=fixed][data-sidebartype=mini-sidebar] .app-header {

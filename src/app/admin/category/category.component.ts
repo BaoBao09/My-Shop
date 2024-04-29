@@ -3,11 +3,11 @@ import { UntypedFormBuilder, Validators, Form } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 declare var $: any;
 @Component({
-  selector: 'app-product',
-  templateUrl: './product.component.html',
-  styleUrls: ['./product.component.css'],
+  selector: 'app-category',
+  templateUrl: './category.component.html',
+  styleUrls: ['./category.component.css']
 })
-export class ProductComponent implements OnInit {
+export class CategoryComponent implements OnInit  {
   isCreate: any;
   showUpdateModal: boolean = false;
   doneSetupForm: boolean = false;

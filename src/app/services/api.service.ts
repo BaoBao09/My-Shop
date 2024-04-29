@@ -10,7 +10,7 @@ export class ApiService {
   public host = `https://localhost:7064/api/`;
   constructor(private _http: HttpClient, public router: Router) {}
 
-  post(url: string, obj: any) {
+  public post(url: string, obj: any) {
     const body = JSON.stringify(obj);
     // const body = obj;
     let cloneHeader: any = {};
@@ -18,6 +18,21 @@ export class ApiService {
     const headerOptions = new HttpHeaders(cloneHeader);
     return this._http
       .post<any>(this.host + url, body, {headers: headerOptions})
+      .pipe(
+        map(res => {
+
+          return res;
+        })
+      );
+  }
+  public put(url: string, obj: any) {
+    const body = JSON.stringify(obj);
+    // const body = obj;
+    let cloneHeader: any = {};
+    cloneHeader['Content-Type'] = 'application/json';
+    const headerOptions = new HttpHeaders(cloneHeader);
+    return this._http
+      .put<any>(this.host + url, body, {headers: headerOptions})
       .pipe(
         map(res => {
 
@@ -42,7 +57,7 @@ export class ApiService {
       );
   }
 
-  get(url: string) {
+  public get(url: string) {
     // let cloneHeader: any = {};
     // cloneHeader['Content-Type'] = 'application/json';
     // const headerOptions = new HttpHeaders(cloneHeader);
@@ -50,6 +65,19 @@ export class ApiService {
       .get(this.host + url)
       .pipe(
         map(res  => {
+          return res;
+        })
+      );
+  }
+  public delete(url: string) {
+    let cloneHeader: any = {};
+    cloneHeader['Content-Type'] = 'application/json';
+    const headerOptions = new HttpHeaders(cloneHeader);
+    return this._http
+      .delete<any>(this.host + url)
+      .pipe(
+        map(res => {
+
           return res;
         })
       );
