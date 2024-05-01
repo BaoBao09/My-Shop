@@ -5,6 +5,7 @@ import { UserRoutingModule } from './user-routing.module';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { LayoutComponent } from './layout/layout.component';
+import { CategoryComponent } from './category/category.component';
 
 
 
@@ -13,6 +14,7 @@ import { LayoutComponent } from './layout/layout.component';
     FooterComponent,
     HeaderComponent,
     UserComponent,
+    CategoryComponent,
     LayoutComponent
   ],
   imports: [

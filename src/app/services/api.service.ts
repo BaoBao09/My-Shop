@@ -58,11 +58,8 @@ export class ApiService {
   }
 
   public get(url: string) {
-    // let cloneHeader: any = {};
-    // cloneHeader['Content-Type'] = 'application/json';
-    // const headerOptions = new HttpHeaders(cloneHeader);
     return this._http
-      .get(this.host + url)
+      .get<any>(this.host + url)
       .pipe(
         map(res  => {
           return res;
@@ -77,7 +74,6 @@ export class ApiService {
       .delete<any>(this.host + url)
       .pipe(
         map(res => {
-
           return res;
         })
       );

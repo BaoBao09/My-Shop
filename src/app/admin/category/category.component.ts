@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { UntypedFormBuilder, Validators, Form } from '@angular/forms';
+import { UntypedFormBuilder, Validators, Form, FormGroup, FormControl } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 declare var $: any;
 @Component({
@@ -7,92 +7,131 @@ declare var $: any;
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.css']
 })
-export class CategoryComponent implements OnInit  {
-  isCreate: any;
-  showUpdateModal: boolean = false;
-  doneSetupForm: boolean = false;
-  formdata: any;
+export class CategoryComponent {
+  public isCreate: any;
+  public showUpdateModal: boolean = false;
+  public doneSetupForm: boolean = false;
   public formsearch: any;
   public page: number = 1;
   public pageSize: number = 5;
   public totalItems: number = 10;
   public currentPage = 1;
-  public tenSP = "";
-  public _api!: ApiService;
-  public items: object[] = [
-    {
-      name: 'Russia',
-      flag: 'f/f3/Flag_of_Russia.svg',
-      area: 17075200,
-      population: 146989754,
-    },
-  ];
-  constructor(private fb: UntypedFormBuilder) {}
+  public formdata: any;
+  public submitted: boolean = false;
+  public items : any;
+  public id = 0;
+  constructor(private _api: ApiService) {}
   ngOnInit(): void {
-    this.formsearch = this.fb.group({
-      payment_method: [''],
-      student_id: [''],
+    this.formsearch = new FormGroup({
+      tenLoai: new FormControl(),
     });
 
-    //this.search();
+    this.search();
   }
   loadPage(page: number) {
-    setTimeout(() => {
-      this._api.post('',{
-        page: (page + 1), pageSize: this.pageSize}).subscribe((res) => {
-          this.items = res.data;
-          this.totalItems =  res.total;
-      }),
-        750;
+    this.pageSize = 5;
+    var dataSearch = {
+      page: page,
+      pageSize: this.pageSize,
+      tenLoai: this.formsearch.value.tenLoai,
+    };
+    this._api.post('LoaiSP/Search', dataSearch).subscribe((res) => {
+      console.log(res);
+
+      this.items = res.data.data;
+      this.currentPage = res.data.page;
+      this.totalItems = res.data.total;
     });
   }
   search() {
     this.page = 1;
     this.pageSize = 5;
-    this._api.post('', {
-      page: this.page, pageSize: this.pageSize,
-    }).subscribe((res) => {
-      this.items = res.data;
-      this.totalItems =  res.total;
+    var dataSearch = {
+      page: this.page,
+      pageSize: this.pageSize,
+      tenLoai: this.formsearch.value.tenLoai,
+    };
+    this._api.post('LoaiSP/Search', dataSearch).subscribe((res) => {
+      this.items = res.data.data;
+      this.currentPage = res.data.page;
+      this.pageSize = res.data.pageSize;
+      this.totalItems = res.data.totalItem;
+      console.log(this.totalItems);
     });
   }
   createModal() {
     this.doneSetupForm = false;
     this.showUpdateModal = true;
     this.isCreate = true;
-    alert(1);
     setTimeout(() => {
       $('#createUserModal').modal('toggle');
-      this.tenSP = "123";
-      this.formdata = this.fb.group({
-        'Name': ['123', Validators.required],
-        'DoB': ['', Validators.required],
-        'Address': [''],
-        'Phone': [''],
-        'CCCD': [''],
-        'Source': [''],
-        'Note': [''],
-        'Username': ['student_' + Math.floor(100000 + Math.random() * 900000)],
-        'Password': ['123'],
-        'nhaplaimatkhau': ['123', Validators.required],
-        'Role': ['', Validators.required],
-        'Form': "showUpdateModal"
+      this.formdata = new FormGroup({
+        tenLoai: new FormControl('', Validators.required),
+        moTa: new FormControl(''),
       });
-      // this.formdata.get('DoB').setValue(this.today);
-      // this.formdata.get('Role').setValue(this.roles[2].value);
       this.doneSetupForm = true;
     });
   }
-  updateModal(item : any)
-  {
-    debugger
+  updateModal(item: any) {
     this.doneSetupForm = false;
     this.showUpdateModal = true;
     this.isCreate = false;
-    $('#createUserModal').modal('toggle');
+    setTimeout(() => {
+      $('#createUserModal').modal('toggle');
+      this.formdata = new FormGroup({
+        id: new FormControl(item.id),
+        tenLoai: new FormControl(item.tenLoai, Validators.required),
+        moTa: new FormControl(item.moTa),
+      });
+      this.doneSetupForm = true;
+    });
   }
-  onSubmit(arg0: any) {
-    
+  async onSubmit(obj, id) {
+    this.submitted = true;
+    if (this.formdata.invalid) {
+      return;
+    }
+    if (this.isCreate) {
+      obj.id = 0;
+      obj.trangThai = true;
+      await this._api.post('LoaiSP/Create', obj).subscribe((res) => {
+        if (res.success) {
+          alert('Thêm thành công');
+          this.closeModal(id)
+          this.search()
+        } else {
+          alert('Có lỗi xảy ra!');
+        }
+      });
+    } else {
+      obj.trangThai = true;
+      await this._api.put('LoaiSP/Update/'+obj.id, obj).subscribe((res) => {
+        if (res.success) {
+          alert('Sửa thành công');
+          this.closeModal(id)
+          this.search()
+        } else {
+          alert('Có lỗi xảy ra!');
+        }
+      });
+    }
+  }
+  deleteModal(id)
+  {
+    this.id = id
+    $('#confirmDeleteModal').modal('toggle');
+  }
+  confirmDelete() {
+    this._api.delete('LoaiSP/Delete/' + this.id).subscribe((res) => {
+      if (res.success) {
+        alert('Xóa thành công');
+        this.id = 0;
+        this.closeModal('confirmDeleteModal');
+        this.search();
+      } else {
+        alert('Có lỗi xảy ra!');
+      }
+    });
   }
   closeModal(id:any) {
     $(`#${id}`).modal('hide');
