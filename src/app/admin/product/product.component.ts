@@ -1,5 +1,11 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { UntypedFormBuilder, Validators, Form, FormGroup, FormControl } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  Validators,
+  Form,
+  FormGroup,
+  FormControl,
+} from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 declare var $: any;
 @Component({
@@ -17,16 +23,27 @@ export class ProductComponent {
   public totalItems: number = 10;
   public currentPage = 1;
   public formdata: any;
+  public formDetail: any;
   public submitted: boolean = false;
-  public items : any;
+  public items: any;
+  public categories: any;
   public id = 0;
+  public sizes = ['S', 'M', 'L', 'XL'];
+  public colors = ['Trắng', 'Đen', 'Nâu', 'Vàng', 'Xám'];
+  public materials = ['Trắng', 'Đen', 'Nâu', 'Vàng', 'Xám'];
+  public labels = ['Trắng', 'Đen', 'Nâu', 'Vàng', 'Xám'];
+  public productDetails : any = []
   constructor(private _api: ApiService) {}
   ngOnInit(): void {
     this.formsearch = new FormGroup({
       tenSP: new FormControl(),
       thuongHieu: new FormControl(),
     });
-
+    this._api.get('LoaiSP/GetAll').subscribe((res) => {
+      if (res.success) {
+        this.categories = res.data;
+      }
+    });
     this.search();
   }
   loadPage(page: number) {
@@ -38,8 +55,6 @@ export class ProductComponent {
       thuongHieu: this.formsearch.value.thuongHieu,
     };
     this._api.post('SanPham/Search', dataSearch).subscribe((res) => {
-      console.log(res);
-
       this.items = res.data.data;
       this.currentPage = res.data.page;
       this.totalItems = res.data.totalItem;
@@ -54,12 +69,12 @@ export class ProductComponent {
       tenSP: this.formsearch.value.tenSP,
       thuongHieu: this.formsearch.value.thuongHieu,
     };
+    
     this._api.post('SanPham/Search', dataSearch).subscribe((res) => {
       this.items = res.data.data;
       this.currentPage = res.data.page;
       this.pageSize = res.data.pageSize;
       this.totalItems = res.data.totalItem;
-      console.log(this.totalItems);
     });
   }
   createModal() {
@@ -69,22 +84,29 @@ export class ProductComponent {
     setTimeout(() => {
       $('#createUserModal').modal('toggle');
       this.formdata = new FormGroup({
-        idloaiSP: new FormControl(''),
+        idloaiSP: new FormControl(0),
         tenSP: new FormControl('', Validators.required),
         moTa: new FormControl(''),
         chatLieu: new FormControl('', Validators.required),
-        thuongHieu: new FormControl(true, Validators.required),
+        thuongHieu: new FormControl("", Validators.required),
         gia: new FormControl(''),
         hinhAnh: new FormControl(),
       });
+      this.formDetail = new FormGroup({
+        size : new FormControl(""),
+        mauSac : new FormControl(""),
+        soLuong : new FormControl(""),
+        hinhAnh : new FormControl(""),
+      });
       this.doneSetupForm = true;
-   });
+    });
   }
   updateModal(item: any) {
     console.log(item);
     this.doneSetupForm = false;
     this.showUpdateModal = true;
     this.isCreate = false;
+    this.productDetails = item.cTSPhams;
     setTimeout(() => {
       $('#createUserModal').modal('toggle');
       this.formdata = new FormGroup({
@@ -100,6 +122,16 @@ export class ProductComponent {
       this.doneSetupForm = true;
     });
   }
+  addDetail(detail : any)
+  {
+    console.log(detail);
+    this.productDetails.push(detail);
+    
+  }
+  deleteDetal(id)
+  {
+    this.productDetails.splice(id, 1);
+  }
   async onSubmit(obj, id) {
     this.submitted = true;
     if (this.formdata.invalid) {
@@ -111,31 +143,30 @@ export class ProductComponent {
       await this._api.post('SanPham/Create', obj).subscribe((res) => {
         if (res.success) {
           alert('Thêm thành công');
-          this.closeModal(id)
-          this.search()
+          this.closeModal(id);
+          this.search();
         } else {
           alert('Có lỗi xảy ra!');
         }
       });
     } else {
       obj.trangThai = true;
-      await this._api.put('SanPham/Update/'+obj.id, obj).subscribe((res) => {
+      await this._api.put('SanPham/Update/' + obj.id, obj).subscribe((res) => {
         if (res.success) {
           alert('Sửa thành công');
-          this.closeModal(id)
-          this.search()
+          this.closeModal(id);
+          this.search();
         } else {
           alert('Có lỗi xảy ra!');
         }
       });
     }
   }
-  deleteModal(id)
-  {
-    this.id = id
+  deleteModal(id) {
+    this.id = id;
     $('#confirmDeleteModal').modal('toggle');
   }
-  confirmDelete(){
+  confirmDelete() {
     this._api.delete('SanPham/Delete/' + this.id).subscribe((res) => {
       if (res.success) {
         alert('Xóa thành công');

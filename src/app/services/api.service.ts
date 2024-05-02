@@ -66,6 +66,15 @@ export class ApiService {
         })
       );
   }
+  public readfile(url: string) {
+    return this._http
+      .get(this.host + url)
+      .pipe(
+        map(res  => {
+          return res;
+        })
+      );
+  }
   public delete(url: string) {
     let cloneHeader: any = {};
     cloneHeader['Content-Type'] = 'application/json';
