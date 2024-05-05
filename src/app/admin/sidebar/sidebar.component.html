@@ -22,7 +22,7 @@
                 </a>
               </li>
               <li class="sidebar-item">
-                <a class="sidebar-link" href="./admin/product" aria-expanded="false">
+                <a class="sidebar-link" [routerLink]="['/admin/product']" aria-expanded="false">
                   <span>
                     <i class="ti ti-article"></i>
                   </span>
@@ -30,7 +30,7 @@
                 </a>
               </li>
               <li class="sidebar-item">
-                <a class="sidebar-link" href="./admin/category" aria-expanded="false">
+                <a class="sidebar-link" [routerLink]="['/admin/category']" aria-expanded="false">
                   <span>
                     <i class="ti ti-alert-circle"></i>
                   </span>
@@ -38,19 +38,19 @@
                 </a>
               </li>
               <li class="sidebar-item">
-                <a class="sidebar-link" href="./admin/customer" aria-expanded="false">
+                <a class="sidebar-link" [routerLink]="['/admin/customer']" aria-expanded="false">
                   <span>
                     <i class="ti ti-cards"></i>
                   </span>
                   <span class="hide-menu">Khách hàng</span>
                 </a>
               </li>
-              <li class="sidebar-item">
+              <li class="sidebar-item" *ngIf="userSubject.data.role == 1">
                 <a class="sidebar-link" href="./ui-forms.html" aria-expanded="false">
                   <span>
                     <i class="ti ti-file-description"></i>
                   </span>
-                  <span class="hide-menu">Forms</span>
+                  <span class="hide-menu">Quản lý nhân viên</span>
                 </a>
               </li>
               <li class="sidebar-item">

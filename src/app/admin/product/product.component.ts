@@ -32,7 +32,7 @@ export class ProductComponent {
   public colors = ['Trắng', 'Đen', 'Nâu', 'Vàng', 'Xám'];
   public materials = ['Trắng', 'Đen', 'Nâu', 'Vàng', 'Xám'];
   public labels = ['Trắng', 'Đen', 'Nâu', 'Vàng', 'Xám'];
-  public productDetails : any = []
+  public productDetails: any = [];
   constructor(private _api: ApiService) {}
   ngOnInit(): void {
     this.formsearch = new FormGroup({
@@ -69,7 +69,7 @@ export class ProductComponent {
       tenSP: this.formsearch.value.tenSP,
       thuongHieu: this.formsearch.value.thuongHieu,
     };
-    
+
     this._api.post('SanPham/Search', dataSearch).subscribe((res) => {
       this.items = res.data.data;
       this.currentPage = res.data.page;
@@ -88,17 +88,18 @@ export class ProductComponent {
         tenSP: new FormControl('', Validators.required),
         moTa: new FormControl(''),
         chatLieu: new FormControl('', Validators.required),
-        thuongHieu: new FormControl("", Validators.required),
+        thuongHieu: new FormControl('', Validators.required),
         gia: new FormControl(''),
         hinhAnh: new FormControl(),
       });
       this.formDetail = new FormGroup({
-        size : new FormControl(""),
-        mauSac : new FormControl(""),
-        soLuong : new FormControl(""),
-        hinhAnh : new FormControl(""),
+        size: new FormControl(''),
+        mauSac: new FormControl(''),
+        soLuong: new FormControl(''),
+        hinhAnh: new FormControl(),
       });
       this.doneSetupForm = true;
+      this.productDetails = [];
     });
   }
   updateModal(item: any) {
@@ -120,16 +121,21 @@ export class ProductComponent {
         hinhAnh: new FormControl(item.hinhAnh),
       });
       this.doneSetupForm = true;
+      this.productDetails = item.cTSPhams;
     });
   }
-  addDetail(detail : any)
-  {
-    console.log(detail);
+  addDetail(detail: any) {
     this.productDetails.push(detail);
-    
   }
-  deleteDetal(id)
-  {
+  updateDetail(detail: any) {
+    this.formDetail = new FormGroup({
+      size: new FormControl(detail.size),
+      mauSac: new FormControl(detail.mauSac),
+      soLuong: new FormControl(detail.soLuong),
+      hinhAnh: new FormControl(detail.hinhAnh),
+    });
+  }
+  deleteDetal(id) {
     this.productDetails.splice(id, 1);
   }
   async onSubmit(obj, id) {
@@ -175,6 +181,17 @@ export class ProductComponent {
         this.search();
       } else {
         alert('Có lỗi xảy ra!');
+      }
+    });
+  }
+  async uploadFile(fileInput) {
+    const file : Blob = fileInput.files[0];
+    const formData = new FormData();
+    
+    formData.append('f', file);
+    await this._api.uploadFile('KhachHang/Upload', formData).subscribe((res) => {
+      if (res.success) {
+        alert(res.data);
       }
     });
   }

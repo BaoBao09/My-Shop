@@ -17,10 +17,9 @@ export class ApiService {
     cloneHeader['Content-Type'] = 'application/json';
     const headerOptions = new HttpHeaders(cloneHeader);
     return this._http
-      .post<any>(this.host + url, body, {headers: headerOptions})
+      .post<any>(this.host + url, body, { headers: headerOptions })
       .pipe(
-        map(res => {
-
+        map((res) => {
           return res;
         })
       );
@@ -32,10 +31,9 @@ export class ApiService {
     cloneHeader['Content-Type'] = 'application/json';
     const headerOptions = new HttpHeaders(cloneHeader);
     return this._http
-      .put<any>(this.host + url, body, {headers: headerOptions})
+      .put<any>(this.host + url, body, { headers: headerOptions })
       .pipe(
-        map(res => {
-
+        map((res) => {
           return res;
         })
       );
@@ -48,29 +46,38 @@ export class ApiService {
     cloneHeader['Content-Type'] = 'multipart/form-data';
     const headerOptions = new HttpHeaders(cloneHeader);
     return this._http
-      .post<any>(this.host + url, body, {headers: headerOptions})
+      .post<any>(this.host + url, body, { headers: headerOptions })
       .pipe(
-        map(res => {
-
+        map((res) => {
           return res;
         })
       );
   }
 
   public get(url: string) {
-    return this._http
-      .get<any>(this.host + url)
-      .pipe(
-        map(res  => {
-          return res;
-        })
-      );
+    return this._http.get<any>(this.host + url).pipe(
+      map((res) => {
+        return res;
+      })
+    );
   }
   public readfile(url: string) {
+    return this._http.get(this.host + url).pipe(
+      map((res) => {
+        return res;
+      })
+    );
+  }
+  public uploadFile(url: string, obj: any) {
+    const body = obj;
+    
+    let cloneHeader: any = {};
+    cloneHeader['Content-Type'] = 'multipart/form-data';
+    const headerOptions = new HttpHeaders(cloneHeader);
     return this._http
-      .get(this.host + url)
+      .post<any>(this.host + url, body)
       .pipe(
-        map(res  => {
+        map((res) => {
           return res;
         })
       );
@@ -79,12 +86,10 @@ export class ApiService {
     let cloneHeader: any = {};
     cloneHeader['Content-Type'] = 'application/json';
     const headerOptions = new HttpHeaders(cloneHeader);
-    return this._http
-      .delete<any>(this.host + url)
-      .pipe(
-        map(res => {
-          return res;
-        })
-      );
+    return this._http.delete<any>(this.host + url).pipe(
+      map((res) => {
+        return res;
+      })
+    );
   }
 }

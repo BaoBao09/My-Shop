@@ -1,6 +1,5 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import {
-  UntypedFormBuilder,
   Validators,
   FormGroup,
   FormControl,
@@ -23,7 +22,7 @@ export class CustomerComponent {
   public currentPage = 1;
   public formdata: any;
   public submitted: boolean = false;
-  public items : any;
+  public items: any;
   public id = 0;
   // createForm: FormGroup<any> | undefined;
 
@@ -116,31 +115,32 @@ export class CustomerComponent {
       await this._api.post('KhachHang/Create', obj).subscribe((res) => {
         if (res.success) {
           alert('Thêm thành công');
-          this.closeModal(id)
-          this.search()
+          this.closeModal(id);
+          this.search();
         } else {
           alert('Có lỗi xảy ra!');
         }
       });
     } else {
       obj.trangThai = true;
-      await this._api.put('KhachHang/Update/'+obj.id, obj).subscribe((res) => {
-        if (res.success) {
-          alert('Sửa thành công');
-          this.closeModal(id)
-          this.search()
-        } else {
-          alert('Có lỗi xảy ra!');
-        }
-      });
+      await this._api
+        .put('KhachHang/Update/' + obj.id, obj)
+        .subscribe((res) => {
+          if (res.success) {
+            alert('Sửa thành công');
+            this.closeModal(id);
+            this.search();
+          } else {
+            alert('Có lỗi xảy ra!');
+          }
+        });
     }
   }
-  deleteModal(id)
-  {
-    this.id = id
+  deleteModal(id) {
+    this.id = id;
     $('#confirmDeleteModal').modal('toggle');
   }
-  confirmDelete(){
+  confirmDelete() {
     this._api.delete('KhachHang/Delete/' + this.id).subscribe((res) => {
       if (res.success) {
         alert('Xóa thành công');

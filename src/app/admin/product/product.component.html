@@ -158,7 +158,7 @@
                                     </div>
                                     <div class="" [formGroup]="formDetail">
                                         <label for="sdt" class="form-label">Hình ảnh</label>
-                                        <input type="file" id="" formControlName="hinhAnh" class="form-control">
+                                        <input type="file" #fileInput formControlName="hinhAnh" class="form-control">
                                     </div>
                                 </div>
                                 <div class=" col-lg-6">
@@ -177,6 +177,9 @@
                                 </div>
                             </div>
                             <div class="pull-right no-margin">
+                                <!-- <a class="btn btn-success btn-xs" (click)="uploadFile(fileInput)">
+                                    <i class="fa fa-plus"></i>&nbsp;Thêm
+                                </a> -->
                                 <a class="btn btn-success btn-xs" (click)="addDetail(formDetail.value)">
                                     <i class="fa fa-plus"></i>&nbsp;Thêm
                                 </a>
@@ -218,8 +221,16 @@
                                                     <p class="mb-0 fw-normal">{{detail.soLuong}}</p>
                                                 </td>
                                                 <td class="border-bottom-0">
-                                                    <button class="badge bg-danger rounded-3 fw-semibold"
-                                                        (click)="deleteDetal(i)">Xóa</button>
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <button (click)="updateModal(detail)"
+                                                                class="badge bg-primary rounded-3 fw-semibold">Sửa</button>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <button class="badge bg-danger rounded-3 fw-semibold"
+                                                                (click)="deleteDetal(i)">Xóa</button>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -256,5 +267,4 @@
             </div>
         </div>
     </div>
-
 </div>
