@@ -12,11 +12,16 @@ export class AuthenticationService {
   public user: Observable<User>;
 
   constructor(private router: Router, private http: HttpClient) {
-    const a = JSON.parse(localStorage.getItem('staff')!).data
-    this.userSubject = new BehaviorSubject<User>(
-      a
-    );
-    this.user = this.userSubject.asObservable();
+    const a = JSON.parse(localStorage.getItem('staff')!);
+    
+    if (a != null) {
+      this.userSubject = new BehaviorSubject<User>(a.data);
+      this.user = this.userSubject.asObservable();
+    }
+    else{
+      this.userSubject = new BehaviorSubject<User>(a);
+      this.user = this.userSubject.asObservable();
+    }
   }
 
   public get userValue(): User {
@@ -42,13 +47,13 @@ export class AuthenticationService {
   logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('staff');
-    this.userSubject.next(new User);
+    this.userSubject.next(new User());
     this.router.navigate(['/admin/login']);
   }
 
   remove() {
     // remove user from local storage to log user out
     localStorage.removeItem('staff');
-    this.userSubject.next(new User);
+    this.userSubject.next(new User());
   }
 }

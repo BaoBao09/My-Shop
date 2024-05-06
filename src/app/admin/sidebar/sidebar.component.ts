@@ -11,6 +11,5 @@ export class SidebarComponent {
   userSubject: any;
   constructor() {
     this.userSubject = JSON.parse(localStorage.getItem('staff')!);
-    console.log(this.userSubject.data.role);
   }
 }

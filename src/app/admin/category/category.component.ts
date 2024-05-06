@@ -56,7 +56,6 @@ export class CategoryComponent {
       this.currentPage = res.data.page;
       this.pageSize = res.data.pageSize;
       this.totalItems = res.data.totalItem;
-      console.log(this.totalItems);
     });
   }
   createModal() {
