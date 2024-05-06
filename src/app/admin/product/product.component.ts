@@ -32,7 +32,9 @@ export class ProductComponent {
   public colors = ['Trắng', 'Đen', 'Nâu', 'Vàng', 'Xám'];
   public materials = ['Trắng', 'Đen', 'Nâu', 'Vàng', 'Xám'];
   public labels = ['Trắng', 'Đen', 'Nâu', 'Vàng', 'Xám'];
-  public productDetails: any = [];
+  public productDetails: Array<any> = [];
+  public imageURL = '';
+  idSP: any;
   constructor(private _api: ApiService) {}
   ngOnInit(): void {
     this.formsearch = new FormGroup({
@@ -89,7 +91,7 @@ export class ProductComponent {
         moTa: new FormControl(''),
         chatLieu: new FormControl('', Validators.required),
         thuongHieu: new FormControl('', Validators.required),
-        gia: new FormControl(''),
+        gia: new FormControl(0),
         hinhAnh: new FormControl(),
       });
       this.formDetail = new FormGroup({
@@ -102,32 +104,53 @@ export class ProductComponent {
       this.productDetails = [];
     });
   }
-  updateModal(item: any) {
-    console.log(item);
+  updateModal(item: any) {   
+    this.idSP = item.id
     this.doneSetupForm = false;
     this.showUpdateModal = true;
     this.isCreate = false;
     this.productDetails = item.cTSPhams;
-    setTimeout(() => {
+    setTimeout(async () => {
       $('#createUserModal').modal('toggle');
       this.formdata = new FormGroup({
         id: new FormControl(item.id),
-        idloaiSP: new FormControl(item.idloaiSP),
+        idloaiSP: new FormControl(item.idLoaiSP),
         tenSP: new FormControl(item.tenSP, Validators.required),
         moTa: new FormControl(item.moTa),
         chatLieu: new FormControl(item.chatLieu),
         thuongHieu: new FormControl(item.thuongHieu),
         gia: new FormControl(item.gia),
         hinhAnh: new FormControl(item.hinhAnh),
+        hinhAnh1: new FormControl(item.hinhAnh1),
       });
-      this.doneSetupForm = true;
-      this.productDetails = item.cTSPhams;
+      const res = await this._api
+      .get('ChiTietSP/GetByIdSP/' + item.id)
+      .toPromise();
+      this.productDetails = res.data;
+      this.doneSetupForm = true;      
+      this.formDetail = new FormGroup({
+        size: new FormControl(''),
+        mauSac: new FormControl(''),
+        soLuong: new FormControl(''),
+        hinhAnh: new FormControl(),
+      });
     });
   }
-  addDetail(detail: any) {
-    this.productDetails.push(detail);
+  async addDetail(detail: any, addDetail) {
+    await this.uploadDetailImage(addDetail);
+    detail.id = 0;
+    detail.idSanPham = this.idSP;
+    detail.trangThai = true;
+    detail.hinhAnh = this.imageURL;
+    await this._api.post('ChiTietSP/Create', detail).subscribe((res) => {
+      console.log(res);
+      
+    })
+    if (this.productDetails && Array.isArray(this.productDetails)) {
+      this.productDetails.push(detail);
+    }
   }
-  updateDetail(detail: any) {
+  updateDetail(detail: any, fileInput) {
     this.formDetail = new FormGroup({
       size: new FormControl(detail.size),
       mauSac: new FormControl(detail.mauSac),
@@ -139,6 +162,7 @@ export class ProductComponent {
     this.productDetails.splice(id, 1);
   }
   async onSubmit(obj, id) {
+    obj.idloaiSP = this.formdata.get("idloaiSP").value
     this.submitted = true;
     if (this.formdata.invalid) {
       return;
@@ -146,6 +170,10 @@ export class ProductComponent {
     if (this.isCreate) {
       obj.id = 0;
       obj.trangThai = true;
+      await this.uploadFile(0);
+      console.log(this.imageURL);
+      obj.hinhAnh1 = this.imageURL;
+
       await this._api.post('SanPham/Create', obj).subscribe((res) => {
         if (res.success) {
           alert('Thêm thành công');
@@ -155,17 +183,21 @@ export class ProductComponent {
           alert('Có lỗi xảy ra!');
         }
       });
-    } else {
+    }
+    
+    else {
       obj.trangThai = true;
-      await this._api.put('SanPham/Update/' + obj.id, obj).subscribe((res) => {
-        if (res.success) {
-          alert('Sửa thành công');
-          this.closeModal(id);
-          this.search();
-        } else {
-          alert('Có lỗi xảy ra!');
-        }
-      });
+      obj.cTSPhams = this.productDetails
+      console.log(obj);
+      // await this._api.put('SanPham/Update/' + obj.id, obj).subscribe((res) => {
+      //   if (res.success) {
+      //     alert('Sửa thành công');
+      //     this.closeModal(id);
+      //     this.search();
+      //   } else {
+      //     alert('Có lỗi xảy ra!');
+      //   }
+      // });
     }
   }
   deleteModal(id) {
@@ -184,16 +216,38 @@ export class ProductComponent {
       }
     });
   }
-  async uploadFile(fileInput) {
-    const file : Blob = fileInput.files[0];
+  async uploadFile(id) {
+    this.imageURL = '';
+    const fileInput =
+      document.querySelector<HTMLInputElement>('input[type=file]')!;
+    const file = fileInput.files![0];
+    console.log(fileInput.files);
+
     const formData = new FormData();
-    
     formData.append('f', file);
-    await this._api.uploadFile('KhachHang/Upload', formData).subscribe((res) => {
-      if (res.success) {
-        alert(res.data);
-      }
-    });
+    const res = await this._api
+      .uploadFile('File/Upload/Product', formData)
+      .toPromise();
+    if (res.success) {
+      this.imageURL = res.data;
+    }
+  }
+  async uploadDetailImage(fileInput) {
+    this.imageURL = '';
+    const file = fileInput.files![0];
+    console.log(fileInput.files);
+
+    const formData = new FormData();
+    formData.append('f', file);
+    const res = await this._api
+      .uploadFile('File/Upload/Product', formData)
+      .toPromise();
+    if (res.success) {
+      this.imageURL = res.data;
+    }
+  }
+  loadImage(url) {
+    return 'https://localhost:7064/api/File/ReadFile?path=' + url;
   }
   closeModal(id: any) {
     $(`#${id}`).modal('hide');
