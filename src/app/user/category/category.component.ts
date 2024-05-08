@@ -23,4 +23,7 @@ export class CategoryComponent {
       this.products = res.data;
     });
   }
+  loadImage(url) {
+    return 'https://localhost:7064/api/File/ReadFile?path=' + url;
+  }
 }

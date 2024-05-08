@@ -201,10 +201,10 @@
           <div class="col-lg-4 col-md-6 col-sm-6" *ngFor="let product of products; let i = index">
             <div class="product__item">
               <div class="product__item__pic set-bg" data-setbg="assets/users/img/product/product-2.jpg">
-                <img src="assets/users/img/product/product-2.jpg" alt="" srcset="">
+                <img src="{{loadImage(product.hinhAnh1)}}" alt="" srcset="">
                 <ul class="product__hover">
                   <li><a href="#"><img src="assets/users/img/icon/heart.png" alt=""></a></li>
-                  <li><a href="#"><img src="assets/users/img/icon/compare.png" alt=""> <span>Compare</span></a>
+                  <li><a routerLink="/product-details/{{product.id}}"><img src="assets/users/img/icon/compare.png" alt=""> <span>Compare</span></a>
                   </li>
                   <li><a href="#"><img src="assets/users/img/icon/search.png" alt=""></a></li>
                 </ul>
@@ -219,7 +219,7 @@
                   <i class="fa fa-star-o"></i>
                   <i class="fa fa-star-o"></i>
                 </div>
-                <h5>{{product.gia}} VNĐ</h5>
+                <h5>{{product.gia| currency:"":"":"5.0" }} VNĐ</h5>
                 <div class="product__color__select">
                   <label for="pc-4">
                     <input type="radio" id="pc-4">
