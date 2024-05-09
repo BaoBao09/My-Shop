@@ -1,5 +1,5 @@
-import { Component, Injector, OnInit } from '@angular/core';
-import { UntypedFormBuilder, Validators, Form, FormGroup, FormControl } from '@angular/forms';
+import { Component } from '@angular/core';
+import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 declare var $: any;
 @Component({

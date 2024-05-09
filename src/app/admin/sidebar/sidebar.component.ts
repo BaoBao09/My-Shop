@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { User } from 'src/app/model/user';
 
 @Component({
   selector: 'app-sidebar',

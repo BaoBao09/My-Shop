@@ -6,6 +6,9 @@ import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { LayoutComponent } from './layout/layout.component';
 import { CategoryComponent } from './category/category.component';
+import { CartComponent } from './cart/cart.component';
+import { NgForm, ReactiveFormsModule } from '@angular/forms';
+import { CheckOutComponent } from './check-out/check-out.component';
 
 
 
@@ -15,11 +18,14 @@ import { CategoryComponent } from './category/category.component';
     HeaderComponent,
     UserComponent,
     CategoryComponent,
-    LayoutComponent
+    LayoutComponent,
+    CartComponent,
+    CheckOutComponent
   ],
   imports: [
     CommonModule,
-    UserRoutingModule
+    UserRoutingModule,
+    ReactiveFormsModule,
   ]
 })
 export class UserModule { }
