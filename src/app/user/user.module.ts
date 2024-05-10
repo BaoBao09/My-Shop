@@ -9,6 +9,8 @@ import { CategoryComponent } from './category/category.component';
 import { CartComponent } from './cart/cart.component';
 import { NgForm, ReactiveFormsModule } from '@angular/forms';
 import { CheckOutComponent } from './check-out/check-out.component';
+import { LoginComponent } from './login/login.component';
+import { ProductComponent } from './product/product.component';
 
 
 
@@ -20,7 +22,9 @@ import { CheckOutComponent } from './check-out/check-out.component';
     CategoryComponent,
     LayoutComponent,
     CartComponent,
-    CheckOutComponent
+    CheckOutComponent,
+    LoginComponent,
+    ProductComponent
   ],
   imports: [
     CommonModule,

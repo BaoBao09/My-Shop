@@ -30,8 +30,8 @@ export class ProductComponent {
   public id = 0;
   public sizes = ['S', 'M', 'L', 'XL'];
   public colors = ['Trắng', 'Đen', 'Nâu', 'Vàng', 'Xám'];
-  public materials = ['Trắng', 'Đen', 'Nâu', 'Vàng', 'Xám'];
-  public labels = ['Trắng', 'Đen', 'Nâu', 'Vàng', 'Xám'];
+  public materials = ['Cotton', 'Vải thun', 'Kaki', 'Ruby', 'Lanh', 'Da PU'];
+  public labels = ['Zenkonu', 'LOURENTS', 'FELIE DRESS', 'Vans', 'Louis Vuitton', 'FABUMAN'];
   public productDetails: Array<any> = [];
   public imageURL = '';
   idSP: any;
@@ -104,7 +104,7 @@ export class ProductComponent {
       this.productDetails = [];
     });
   }
-  updateModal(item: any) {   
+  updateModal(item: any) {
     this.idSP = item.id
     this.doneSetupForm = false;
     this.showUpdateModal = true;
@@ -127,7 +127,7 @@ export class ProductComponent {
       .get('ChiTietSP/GetByIdSP/' + item.id)
       .toPromise();
       this.productDetails = res.data;
-      this.doneSetupForm = true;      
+      this.doneSetupForm = true;
       this.formDetail = new FormGroup({
         size: new FormControl(''),
         mauSac: new FormControl(''),
@@ -144,7 +144,7 @@ export class ProductComponent {
     detail.hinhAnh = this.imageURL;
     await this._api.post('ChiTietSP/Create', detail).subscribe((res) => {
       console.log(res);
-      
+
     })
     if (this.productDetails && Array.isArray(this.productDetails)) {
       this.productDetails.push(detail);
@@ -184,7 +184,7 @@ export class ProductComponent {
         }
       });
     }
-    
+
     else {
       obj.trangThai = true;
       obj.cTSPhams = this.productDetails

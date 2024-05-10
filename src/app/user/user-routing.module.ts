@@ -8,6 +8,7 @@ import { BlogComponent } from './blog/blog.component';
 import { CheckOutComponent } from './check-out/check-out.component';
 import { ContactComponent } from './contact/contact.component';
 import { LayoutComponent } from './layout/layout.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,9 @@ const routes: Routes = [
       { path: 'contact', component: ContactComponent },
     ],
   },
+  {
+    path: 'login', component: LoginComponent
+  }
 ];
 
 @NgModule({

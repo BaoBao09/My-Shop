@@ -45,8 +45,8 @@
                                 <td class="quantity__item">
                                     <div class="quantity">
                                         <div class="pro-qty-2">
-                                            <input type="number" value="{{item.soLuong}}"
-                                                (change)="changeQuantity(item, item.soLuong)" min="1">
+                                          <input type="number" [value]="item.soLuong"
+                                          (change)="changeQuantity(item, $event)" min="1">
                                         </div>
                                     </div>
                                 </td>
