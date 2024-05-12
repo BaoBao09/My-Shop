@@ -24,14 +24,21 @@ export class ProductComponent {
   public currentPage = 1;
   public formdata: any;
   public formDetail: any;
-  public submitted: boolean = false;
+  public isUpdateDetail: boolean = false;
   public items: any;
   public categories: any;
   public id = 0;
   public sizes = ['S', 'M', 'L', 'XL'];
-  public colors = ['Trắng', 'Đen', 'Nâu', 'Vàng', 'Xám'];
+  public colors = ['Trắng', 'Đen', 'Nâu', 'Vàng', 'Xám', 'Xanh'];
   public materials = ['Cotton', 'Vải thun', 'Kaki', 'Ruby', 'Lanh', 'Da PU'];
-  public labels = ['Zenkonu', 'LOURENTS', 'FELIE DRESS', 'Vans', 'Louis Vuitton', 'FABUMAN'];
+  public labels = [
+    'Zenkonu',
+    'LOURENTS',
+    'FELIE DRESS',
+    'Vans',
+    'Louis Vuitton',
+    'FABUMAN',
+  ];
   public productDetails: Array<any> = [];
   public imageURL = '';
   idSP: any;
@@ -105,7 +112,8 @@ export class ProductComponent {
     });
   }
   updateModal(item: any) {
-    this.idSP = item.id
+    console.log(item);
+    this.idSP = item.id;
     this.doneSetupForm = false;
     this.showUpdateModal = true;
     this.isCreate = false;
@@ -124,8 +132,8 @@ export class ProductComponent {
         hinhAnh1: new FormControl(item.hinhAnh1),
       });
       const res = await this._api
-      .get('ChiTietSP/GetByIdSP/' + item.id)
-      .toPromise();
+        .get('ChiTietSP/GetByIdSP/' + item.id)
+        .toPromise();
       this.productDetails = res.data;
       this.doneSetupForm = true;
       this.formDetail = new FormGroup({
@@ -144,26 +152,53 @@ export class ProductComponent {
     detail.hinhAnh = this.imageURL;
     await this._api.post('ChiTietSP/Create', detail).subscribe((res) => {
       console.log(res);
-
-    })
+    });
     if (this.productDetails && Array.isArray(this.productDetails)) {
       this.productDetails.push(detail);
     }
   }
-  updateDetail(detail: any, fileInput) {
+  updateDetail(detail: any) {
+    this.isUpdateDetail = true;
     this.formDetail = new FormGroup({
+      id: new FormControl(detail.id),
+      idSanPham: new FormControl(detail.idSanPham),
       size: new FormControl(detail.size),
       mauSac: new FormControl(detail.mauSac),
       soLuong: new FormControl(detail.soLuong),
       hinhAnh: new FormControl(detail.hinhAnh),
+      trangThai: new FormControl(detail.trangThai),
     });
   }
-  deleteDetal(id) {
-    this.productDetails.splice(id, 1);
+  async submitDetail(detail) {
+    const res = await this._api
+      .put('ChiTietSP/Update/' + detail.idSanPham, detail)
+      .toPromise();
+    if (res.success) {
+      const loadDetail = await this._api
+        .get('ChiTietSP/GetByIdSP/' + detail.idSanPham)
+        .toPromise();
+      this.productDetails = loadDetail.data;
+      this.formDetail = new FormGroup({
+        size: new FormControl(''),
+        mauSac: new FormControl(''),
+        soLuong: new FormControl(''),
+        hinhAnh: new FormControl(),
+      });
+      this.isUpdateDetail = true;
+    }
+  }
+  deleteDetal(id, i) {
+    if (this.isCreate) this.productDetails.splice(id, 1);
+    else {
+      this._api.delete('ChiTietSP/Delete?id=' + id).subscribe((res) => {
+        if (res.success) {
+          this.productDetails.splice(i, 1);
+        } else alert('Có lỗi xảy ra!');
+      });
+    }
   }
   async onSubmit(obj, id) {
-    obj.idloaiSP = this.formdata.get("idloaiSP").value
-    this.submitted = true;
+    obj.idloaiSP = this.formdata.get('idloaiSP').value;
     if (this.formdata.invalid) {
       return;
     }
@@ -183,21 +218,18 @@ export class ProductComponent {
           alert('Có lỗi xảy ra!');
         }
       });
-    }
-
-    else {
+    } else {
       obj.trangThai = true;
-      obj.cTSPhams = this.productDetails
-      console.log(obj);
-      // await this._api.put('SanPham/Update/' + obj.id, obj).subscribe((res) => {
-      //   if (res.success) {
-      //     alert('Sửa thành công');
-      //     this.closeModal(id);
-      //     this.search();
-      //   } else {
-      //     alert('Có lỗi xảy ra!');
-      //   }
-      // });
+      obj.cTSPhams = this.productDetails;
+      await this._api.put('SanPham/Update/' + obj.id, obj).subscribe((res) => {
+        if (res.success) {
+          alert('Sửa thành công');
+          this.closeModal(id);
+          this.search();
+        } else {
+          alert('Có lỗi xảy ra!');
+        }
+      });
     }
   }
   deleteModal(id) {

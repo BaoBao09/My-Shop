@@ -34,12 +34,12 @@
                         <tbody>
                             <tr *ngFor="let item of cart.cTGHangs; let i = index">
                                 <td class="product__cart__item">
-                                    <div class="product__cart__item__pic">
+                                    <div style="width: 100px;" class="product__cart__item__pic">
                                         <img src="{{loadImage(item.hinhAnh)}}" alt="">
                                     </div>
                                     <div class="product__cart__item__text">
                                         <h6>{{item.tenSP}}</h6>
-                                        <h5>{{item.gia}}</h5>
+                                        <h5>{{item.gia | number: '1.0-0'}} VNĐ</h5>
                                     </div>
                                 </td>
                                 <td class="quantity__item">

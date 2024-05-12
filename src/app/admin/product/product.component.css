@@ -27,4 +27,9 @@
   background-color: #555;
   color: #fff;
 }
+.table tbody img {
+  width: 100px; /* Chiều rộng cố định */
+  height: auto; /* Chiều cao tự động tính toán dựa trên tỷ lệ chiều rộng */
+}
+
 
