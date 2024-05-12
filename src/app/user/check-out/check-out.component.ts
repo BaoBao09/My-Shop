@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 @Component({
@@ -10,16 +10,21 @@ import { ApiService } from 'src/app/services/api.service';
 export class CheckOutComponent {
   public khachHang : any;
   public cart : any;
+  formdata: any;
   constructor(private _api: ApiService, private router: Router) {}
   ngOnInit(): void {
-    this.khachHang = JSON.parse(localStorage.getItem("khachHang")!);
-    this.cart = JSON.parse(localStorage.getItem("khachHang")!);
+    this.khachHang = JSON.parse(localStorage.getItem("user")!);
+    this.cart = JSON.parse(localStorage.getItem("cart")!);
     if(this.khachHang){
 
     }
     else{
       this.router.navigate(['/']);
     }
+    this.formdata = new FormGroup({
+      tenKH: new FormControl('', Validators.required),
+      moTa: new FormControl(''),
+    });
   }
   loadData() {
     this._api.get('GioHang/GetByIdKH/' + this.khachHang.id).subscribe((res) => {

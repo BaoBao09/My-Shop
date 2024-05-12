@@ -51,7 +51,7 @@ export class CartComponent {
     });
   }
   deleteItem(item) {
-    this._api.delete('GioHang/GetByIdKH/' + item.id).subscribe((res) => {
+    this._api.delete('CTGHang/Delete/' + item.id).subscribe((res) => {
       if (res.success) {
         this.loadData();
       }

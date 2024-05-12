@@ -38,10 +38,12 @@ export class ProductComponent {
       if (res.success) {
         this.cart = res.data;
         var check = false;
+        var productAdd;
         this.cart.cTGHangs.forEach((e) => {
           if (e.idCTSP == product.ctsPhams[0].id) {
             e.soLuong = e.soLuong + 1;
             check = true;
+            productAdd = e;
           }
         });
         if (!check) {
@@ -60,7 +62,12 @@ export class ProductComponent {
           });
         }
         else{
+          await this._api.put('CTGHang/Update/'+productAdd.id, productAdd).subscribe((res) => {
+            console.log(res);
 
+            if (res.success) alert('Thêm giỏ hàng thành công');
+            else alert('Có lỗi xảy ra, vui lòng kiểm tra lại!');
+          });
         }
       } else {
         const ngaySinhDate = new Date('2024-05-10T00:00:00');
@@ -85,6 +92,9 @@ export class ProductComponent {
             if (res.success) alert('Thêm giỏ hàng thành công');
             else alert('Có lỗi xảy ra, vui lòng kiểm tra lại!');
           });
+        }
+        else{
+          alert("Có lỗi xảy ra, vui lòng thử lại hoặc liên hệ với chúng tôi")
         }
       }
     } else {
