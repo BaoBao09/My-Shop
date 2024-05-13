@@ -153,8 +153,8 @@
                             <div class="" [formGroup]="formdata">
                                 <label for="chatLieu" class="form-label">Chất liệu</label>
                                 <select id="chatLieu" formControlName="chatLieu" class="form-select">
-                                    <option *ngFor="let label of labels" value={{label}}>
-                                        {{label}}</option>
+                                    <option *ngFor="let material of materials" value={{material}}>
+                                        {{material}}</option>
                                 </select>
                             </div>
                         </div>

@@ -14,7 +14,8 @@ export class CheckOutComponent {
   constructor(private _api: ApiService, private router: Router) {}
   ngOnInit(): void {
     this.khachHang = JSON.parse(localStorage.getItem("user")!);
-    this.cart = JSON.parse(localStorage.getItem("cart")!);
+    this.cart = JSON.parse(sessionStorage.getItem("cartPayment")!);
+    console.log(this.cart);
     if(this.khachHang){
 
     }

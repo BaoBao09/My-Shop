@@ -51,7 +51,8 @@ export class CartComponent {
     });
   }
   deleteItem(item) {
-    this._api.delete('CTGHang/Delete/' + item.id).subscribe((res) => {
+    console.log(item);
+    this._api.delete('CTGHang/Delete?id=' + item.id).subscribe((res) => {
       if (res.success) {
         this.loadData();
       }
@@ -62,7 +63,7 @@ export class CartComponent {
     this._api
       .get('KhuyenMai/CheckDiscount?discountID=' + discount.discountID)
       .subscribe((res) => {
-        this.discountPercent = res.data;
+        this.discountPercent = res.data.tiLeKM;
       });
   }
   sumCart() {

@@ -50,30 +50,10 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="cart__price">{{item.gia * item.soLuong}}</td>
+                                <td class="cart__price">{{item.gia * item.soLuong | number: '1.0-0'}}</td>
                                 <td class="cart__close">
                                     <i class="fa fa-close" (click)="deleteItem(item)"></i>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td class="product__cart__item">
-                                    <div class="product__cart__item__pic">
-                                        <img src="assets/users/img/shopping-cart/cart-2.jpg" alt="">
-                                    </div>
-                                    <div class="product__cart__item__text">
-                                        <h6>Diagonal Textured Cap</h6>
-                                        <h5>$98.49</h5>
-                                    </div>
-                                </td>
-                                <td class="quantity__item">
-                                    <div class="quantity">
-                                        <div class="pro-qty-2">
-                                            <input type="text" value="1">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="cart__price">$ 32.50</td>
-                                <td class="cart__close"><i class="fa fa-close"></i></td>
                             </tr>
                         </tbody>
                     </table>
@@ -82,11 +62,6 @@
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="continue__btn">
                             <a [routerLink]="'/'">Tiếp tục mua sắm</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6">
-                        <div class="continue__btn update__btn">
-                            <a href="#"><i class="fa fa-spinner"></i>Cập nhật giỏ hàng</a>
                         </div>
                     </div>
                 </div>
@@ -104,9 +79,9 @@
                     <ul>
                         <li>Tạm tính: <span>{{total}}</span></li>
                         <li>Khuyến mại: <span>{{total*discountPercent}}</span></li>
-                        <li>Tổng: <span>{{sumPayment()}}</span></li>
+                        <li>Tổng: <span>{{sumPayment()| number: '1.0-0'}}</span></li>
                     </ul>
-                    <a class="primary-btn" (click)="handleCheckout()">Thanh Toán</a>
+                    <a style="color: #ffff;" class="primary-btn" (click)="handleCheckout()">Thanh Toán</a>
                 </div>
             </div>
         </div>

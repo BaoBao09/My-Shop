@@ -29,15 +29,19 @@ export class ProductComponent {
   public categories: any;
   public id = 0;
   public sizes = ['S', 'M', 'L', 'XL'];
-  public colors = ['Trắng', 'Đen', 'Nâu', 'Vàng', 'Xám', 'Xanh'];
-  public materials = ['Cotton', 'Vải thun', 'Kaki', 'Ruby', 'Lanh', 'Da PU'];
+  public colors = ['Trắng', 'Đen', 'Nâu', 'Vàng', 'Xám', 'Xanh','Hồng'];
+  public materials = ['Cotton', 'Vải thun', 'Kaki', 'Ruby', 'Lanh', 'Da PU','Jeans','Lụa mềm'];
   public labels = [
-    'Zenkonu',
-    'LOURENTS',
     'FELIE DRESS',
+    'Fabuman',
+    'Minzee',
     'Vans',
+    'Zenkonu',
     'Louis Vuitton',
-    'FABUMAN',
+    'OBITA',
+    'MLB',
+    'Shop của nhà',
+    'KENCO',
   ];
   public productDetails: Array<any> = [];
   public imageURL = '';
@@ -188,10 +192,11 @@ export class ProductComponent {
     }
   }
   deleteDetal(id, i) {
-    if (this.isCreate) this.productDetails.splice(id, 1);
+    if (this.isCreate) this.productDetails.splice(i, 1);
     else {
       this._api.delete('ChiTietSP/Delete?id=' + id).subscribe((res) => {
         if (res.success) {
+          alert('Xóa thành công')
           this.productDetails.splice(i, 1);
         } else alert('Có lỗi xảy ra!');
       });
