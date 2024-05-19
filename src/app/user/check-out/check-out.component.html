@@ -23,32 +23,26 @@
             <form action="#">
                 <div class="row">
                     <div class="col-lg-8 col-md-6">
-                        <h6 class="checkout__title">Thông tin đơn hàng</h6>
-                        <div class="checkout__input">
-                            <p>Họ và tên<span> *</span></p>
-                            <input type="text" value="{{khachHang.hoTen}}">
+                        <h6 class="checkout__title">Thông tin nhận hàng</h6>
+                        <div class="pull-right no-margin">
+                            <a (click)="changeAddress()" class="btn btn-success btn-xs">
+                                Chỉnh sửa
+                            </a>
                         </div>
                         <div class="checkout__input">
-                            <p>Địa chỉ<span> *</span></p>
-                            <input type="text" placeholder="Địa chỉ nhận hàng">
-                        </div>
-                        <div class="checkout__input">
-                            <p>Số điện thoại<span> *</span></p>
-                            <input type="text" value="{{khachHang.soDT}}">
-                        </div>
-                        <div class="checkout__input">
-                            <p>Email<span> *</span></p>
-                            <input type="text" value="{{khachHang.email}}">
+                            <p>Họ tên người nhận: </p>
+                            <p>Số điện thoại: </p>
+                            <p>Địa chỉ: </p>
                         </div>
                         <div class="checkout__input">
                             <p>Phương thức thanh toán<span>*</span></p>
-                            <ul class="check_out_payment">
+                            <ul class="check_out_payment" [formGroup]="hdban">
                                 <li>
-                                    <input type="radio" value="11" id="cod" name="payment">
+                                    <input type="radio" formControlName="tinhTrangDH" value=11 id="cod" name="payment">
                                     <label for="cod">Thanh Toán Khi Nhận Hàng</label>
                                 </li>
                                 <li>
-                                    <input type="radio" value="12" id="bank" name="payment">
+                                    <input type="radio" formControlName="tinhTrangDH" value=12 id="bank" name="payment">
                                     <label for="bank">Chuyển Khoản Ngân Hàng</label>
                                 </li>
                             </ul>
@@ -62,7 +56,7 @@
                         <div class="checkout__order">
                             <h4 class="order__title">Đơn hàng của bạn</h4>
                             <div class="checkout__order__products">Sản phẩm <span>Số lượng</span></div>
-                            <ul class="checkout__total__products">
+                            <!-- <ul class="checkout__total__products">
                                 <li *ngFor="let item of cart.cTGHangs; let i = index">
                                     {{ i + 1 }}. {{showName(item.tenSP)}} <span>{{item.gia * item.soLuong}}</span>
                                 </li>
@@ -70,10 +64,10 @@
                             </ul>
                             <ul class="checkout__total__all">
                                 <li>Tạm tính <span>{{cart.total}}</span></li>
-                                <li>Giảm giá {{cart.total - cart.totalPayment}}</li>
+                                <li>Giảm giá <span>{{cart.total - cart.totalPayment}}</span></li>
                                 <li>Thành tiền <span>{{cart.totalPayment}}</span></li>
-                            </ul>
-                            <button (click)="handleCheckout()" class="site-btn">Đặt Hàng</button>
+                            </ul> -->
+                            <button type="button" (click)="handleCheckout(hdban.value)" class="site-btn">Đặt Hàng</button>
                         </div>
                     </div>
                 </div>
@@ -82,3 +76,124 @@
     </div>
 </section>
 <!-- Checkout Section End -->
+
+<div id="addressModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-sl full-height-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Chỉnh sửa địa chỉ nhận hàng</h4>
+            </div>
+            <form class="modal-form" [formGroup]="formdata">
+                <div class="row">
+                    <div class=" col-lg-8">
+                        <ul>
+                            <li *ngFor="let add of addresses">
+                                <div class="row">
+                                    <div class="col-lg-1">
+                                        <input type="radio" value="11" id="cod" name="dc1">
+                                    </div>
+                                    <label class="col-lg-9" for="dc1">
+                                        <label for="dc1"> Họ tên người nhận: {{add.nguoiNhan}}</label> - <span>Số điện
+                                            thoại: </span>
+                                        <div style="margin-left: 4px;">Địa chỉ: </div>
+                                    </label>
+                                    <div class="col-lg-2">
+                                        <button (click)="updateModal(1)" class="badge bg-primary rounded-3 fw-semibold">
+                                            <i class="fa fa-check"></i>&nbsp; Sửa
+                                        </button>
+                                        <button (click)="updateModal(1)" class="badge bg-primary rounded-3 fw-semibold">
+                                            <i class="fa fa-plus"></i> &nbsp; Sửa1</button>
+                                        <button (click)="updateModal(1)"
+                                            class="badge bg-primary rounded-3 fw-semibold">Sửa2</button>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="row">
+                                    <label class="col-lg-8">
+                                        <label for="dc1"> Họ tên người nhận: </label> - <span>Số điện thoại: </span>
+                                        <div style="margin-left: 4px;">Địa chỉ: </div>
+                                    </label>
+                                    <div class="col-lg-4">
+                                        <button style="width: 40px; height: 32px; margin: 4px 4px;"
+                                            (click)="showConfirmModal(1)" class="btn btn-success rounded-3 fw-semibold">
+                                            <i class="fa fa-check"></i>&nbsp;
+                                        </button>
+                                        <button style="width: 40px; height: 32px; margin: 4px 4px;"
+                                            (click)="updateModal(1)" class="btn btn-warning rounded-3 fw-semibold">
+                                            <i class="fa fa-edit"></i> &nbsp;</button>
+                                        <button style="width: 40px; height: 32px; margin: 4px 4px;"
+                                            (click)="showDeleteModal(1)" class="btn btn-danger rounded-3 fw-semibold">
+                                            <i class="fa fa-trash"></i> &nbsp;</button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="" [formGroup]="formdata">
+                            <label for="exampleInputPassword1" class="form-label">Họ và tên người nhận(<span
+                                    style="color: red;">*</span>)</label>
+                            <input type="nguoiNhan" formControlName="nguoiNhan" class="form-control" />
+                            <div *ngIf="formdata.get('nguoiNhan').invalid && formdata.get('nguoiNhan').touched"
+                                class="invalid-form">
+                                <div *ngIf="formdata.get('nguoiNhan').errors.required">Họ và tên không được để trống
+                                </div>
+                            </div>
+                        </div>
+                        <div class="" [formGroup]="formdata">
+                            <label for="exampleInputPassword1" class="form-label">Số điện thoại(<span
+                                    style="color: red;">*</span>)</label>
+                            <input type="text" formControlName="soDT" class="form-control" />
+                            <div *ngIf="formdata.get('soDT').invalid && formdata.get('soDT').touched"
+                                class="invalid-form">
+                                <div *ngIf="formdata.get('soDT').errors.required">Số điện thoại không được để trống
+                                </div>
+                            </div>
+                        </div>
+                        <div class="" [formGroup]="formdata">
+                            <label for="exampleInputPassword1" class="form-label">Địa chỉ(<span
+                                    style="color: red;">*</span>)</label>
+                            <input type="text" formControlName="diaChiNH" class="form-control" />
+                            <div *ngIf="formdata.get('diaChiNH').invalid && formdata.get('diaChiNH').touched"
+                                class="invalid-form">
+                                <div *ngIf="formdata.get('diaChiNH').errors.required">Địa chỉ không được để trống</div>
+                            </div>
+                        </div>
+                        <button (click)="resetForm()" class="badge bg-primary rounded-3 fw-semibold" type="button">
+                            Làm mới
+                        </button>
+                        <button *ngIf="!isUpdateModal" (click)="onSubmit(formdata.value)"
+                            class="badge bg-primary rounded-3 fw-semibold" type="button">Thêm địa chỉ</button>
+                        <button *ngIf="isUpdateModal" (click)="onSubmit(formdata.value)"
+                            class="badge bg-primary rounded-3 fw-semibold" type="button">Xác nhận</button>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <div class="modal-btn">
+                    <button class="btn btn-danger" (click)="closeModal('addressModal')">Hủy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="confirmModal" role="dialog" >
+    <div class="modal-dialog">
+        <div class="modal-content" style="z-index: 1;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Xác nhận xóa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span *ngIf="isDeleteModal"> Bạn có chắc chắn muốn xóa không?</span>
+                <span *ngIf="!isDeleteModal"> Bạn muốn chọn địa chỉ này chứ?</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button *ngIf="isDeleteModal" type="button" class="btn btn-danger" (click)="confirmDelete()">Xóa</button>
+                <button *ngIf="!isDeleteModal" type="button" class="btn btn-danger" (click)="confirmDelete()">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>

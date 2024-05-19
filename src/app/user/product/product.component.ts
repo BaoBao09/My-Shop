@@ -70,7 +70,7 @@ export class ProductComponent {
           });
         }
       } else {
-        const ngaySinhDate = new Date('2024-05-10T00:00:00');
+        const ngaySinhDate = new Date;
         ngaySinhDate.setDate(ngaySinhDate.getDate() + 1);
         const ngaySinhValue = ngaySinhDate.toISOString().split('T')[0];
         var gh = {
