@@ -15,6 +15,8 @@ export class CartComponent {
   public discountPercent = 0;
   public total: number = 0;
   public totalPayment: number = 0;
+  public selectedColor = "";
+  public selectedSize = "";
   constructor(private _api: ApiService, private router: Router) {}
   ngOnInit(): void {
     var local = localStorage.getItem('user');
@@ -32,10 +34,10 @@ export class CartComponent {
     this._api.get('GioHang/GetByIdKH/' + this.user.id).subscribe((res) => {
       if (res.success) {
         this.cart = res.data;
-        console.log(this.cart);
         this.sumCart();
       }
     });
+
   }
   loadImage(url) {
     return 'https://localhost:7064/api/File/ReadFile?path=' + url;

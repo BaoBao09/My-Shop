@@ -1,13 +1,17 @@
 import { Component } from '@angular/core';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
+import {
+  Validators,
+  FormGroup,
+  FormControl,
+} from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 declare var $: any;
 @Component({
-  selector: 'app-category',
-  templateUrl: './category.component.html',
-  styleUrls: ['./category.component.css']
+  selector: 'app-promotion',
+  templateUrl: './promotion.component.html',
+  styleUrls: ['./promotion.component.css']
 })
-export class CategoryComponent {
+export class PromotionComponent {
   public isCreate: any;
   public showUpdateModal: boolean = false;
   public doneSetupForm: boolean = false;
@@ -18,14 +22,14 @@ export class CategoryComponent {
   public currentPage = 1;
   public formdata: any;
   public submitted: boolean = false;
-  public items : any;
+  public items: any;
   public id = 0;
+
   constructor(private _api: ApiService) {}
   ngOnInit(): void {
     this.formsearch = new FormGroup({
-      tenLoai: new FormControl(),
-    });
-
+      discountId : new FormControl(),
+    })
     this.search();
   }
   loadPage(page: number) {
@@ -33,13 +37,12 @@ export class CategoryComponent {
     var dataSearch = {
       page: page,
       pageSize: this.pageSize,
-      tenLoai: this.formsearch.value.tenLoai,
+      discountId: this.formsearch.value.discountId,
     };
-    this._api.post('LoaiSP/Search', dataSearch).subscribe((res) => {
+    this._api.post('KhuyenMai/Search', dataSearch).subscribe((res) => {
       this.items = res.data.data;
       this.currentPage = res.data.page;
-      this.pageSize = res.data.pageSize;
-      this.totalItems = res.data.totalItem;
+      this.totalItems = res.data.total;
     });
   }
   search() {
@@ -48,9 +51,9 @@ export class CategoryComponent {
     var dataSearch = {
       page: this.page,
       pageSize: this.pageSize,
-      tenLoai: this.formsearch.value.tenLoai,
+      discountId: this.formsearch.value.discountId,
     };
-    this._api.post('LoaiSP/Search', dataSearch).subscribe((res) => {
+    this._api.post('KhuyenMai/Search', dataSearch).subscribe((res) => {
       this.items = res.data.data;
       this.currentPage = res.data.page;
       this.pageSize = res.data.pageSize;
@@ -61,16 +64,24 @@ export class CategoryComponent {
     this.doneSetupForm = false;
     this.showUpdateModal = true;
     this.isCreate = true;
-    setTimeout(() => {
+    setTimeout(() =>{
       $('#createUserModal').modal('toggle');
       this.formdata = new FormGroup({
-        tenLoai: new FormControl('', Validators.required),
-        moTa: new FormControl(''),
+        ngayAD: new FormControl(Date.now),
+        ngayKT: new FormControl(Date.now),
+        tiLeKM: new FormControl(''),
+        discountId: new FormControl(''),
       });
       this.doneSetupForm = true;
     });
   }
   updateModal(item: any) {
+    const ngayADDate = new Date('2024-04-01T00:00:00');
+    ngayADDate.setDate(ngayADDate.getDate() + 1);
+    const ngayADValue = ngayADDate.toISOString().split('T')[0];
+    const ngayKTDate = new Date('2024-04-01T00:00:00');
+    ngayKTDate.setDate(ngayKTDate.getDate() + 1);
+    const ngayKTValue = ngayKTDate.toISOString().split('T')[0];
     this.doneSetupForm = false;
     this.showUpdateModal = true;
     this.isCreate = false;
@@ -78,60 +89,61 @@ export class CategoryComponent {
       $('#createUserModal').modal('toggle');
       this.formdata = new FormGroup({
         id: new FormControl(item.id),
-        tenLoai: new FormControl(item.tenLoai, Validators.required),
-        moTa: new FormControl(item.moTa),
+        ngayAD: new FormControl(ngayADValue),
+        ngayKT: new FormControl(ngayKTValue),
+        tiLeKM: new FormControl(item.tiLeKM),
+        discountId: new FormControl(item.discountId),
       });
       this.doneSetupForm = true;
     });
   }
   async onSubmit(obj, id) {
     this.submitted = true;
+    console.log(obj);
     if (this.formdata.invalid) {
       return;
     }
     if (this.isCreate) {
       obj.id = 0;
-      obj.trangThai = true;
-      await this._api.post('LoaiSP/Create', obj).subscribe((res) => {
+      await this._api.post('KhuyenMai/Create', obj).subscribe((res) => {
         if (res.success) {
           alert('Thêm thành công');
-          this.closeModal(id)
-          this.search()
+          this.closeModal(id);
+          this.search();
         } else {
-          alert('Có lỗi xảy ra!');
+          console.log(res);
+          alert('Có lỗi xảy ra!')
         }
       });
     } else {
-      obj.trangThai = true;
-      await this._api.put('LoaiSP/Update/'+obj.id, obj).subscribe((res) => {
+      await this._api.put('KhuyenMai/Update/' + obj.id, obj).subscribe((res) => {
         if (res.success) {
-          alert('Sửa thành công');
-          this.closeModal(id)
-          this.search()
+          alert('Sửa thành công!');
+          this.closeModal(id);
+          this.search();
         } else {
           alert('Có lỗi xảy ra!');
         }
       });
     }
   }
-  deleteModal(id)
-  {
-    this.id = id
+  deleteModal(id) {
+    this.id = id;
     $('#confirmDeleteModal').modal('toggle');
   }
   confirmDelete() {
-    this._api.delete('LoaiSP/Delete/' + this.id).subscribe((res) => {
+    this._api.delete('KhuyenMai/Delete' + this.id).subscribe((res) => {
       if (res.success) {
         alert('Xóa thành công');
         this.id = 0;
         this.closeModal('confirmDeleteModal');
         this.search();
       } else {
-        alert('Có lỗi xảy ra!');
+        alert('Có lỗi xảy ra !');
       }
     });
   }
-  closeModal(id:any) {
+  closeModal(id: any) {
     $(`#${id}`).modal('hide');
   }
 }

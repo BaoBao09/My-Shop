@@ -12,9 +12,9 @@ export class AuthenticationService {
 
   constructor(private router: Router, private http: HttpClient) {
     const a = JSON.parse(localStorage.getItem('staff')!);
-    
+
     if (a != null) {
-      this.userSubject = new BehaviorSubject<User>(a.data);
+      this.userSubject = new BehaviorSubject<User>(a);
       this.user = this.userSubject.asObservable();
     }
     else{
@@ -35,10 +35,11 @@ export class AuthenticationService {
       })
       .pipe(
         map((user) => {
-          // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem('staff', JSON.stringify(user));
-          this.userSubject.next(user);
-          return user;
+          if(user.success){
+            localStorage.setItem('staff', JSON.stringify(user.data));
+            this.userSubject.next(user);
+            return user;
+          }
         })
       );
   }

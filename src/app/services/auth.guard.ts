@@ -13,7 +13,7 @@ export class AuthGuard {
         const user = this.authenticationService.userValue;
         if (user) {
             return true;
-        } 
+        }
         // not logged in so redirect to login page with the return url
         this.router.navigate(['/admin/login'], { queryParams: { returnUrl: state.url } });
         return false;
@@ -28,12 +28,12 @@ export class RoleGuard {
     ) { }
 
     canActivate(route: ActivatedRouteSnapshot) {
-        const user = this.authenticationService.userValue;        
-        
-        if (route.data['roles'] && route.data['roles'].indexOf(user.role) === -1) {
-            this.router.navigate(['/login']);
+        const user = this.authenticationService.userValue;
+
+        if (route.data['roles'][0] && route.data['roles'].indexOf(user.role) === -1) {
+            this.router.navigate(['/admin/login']);
             return false;
-        }     
+        }
         return true;
     }
 }

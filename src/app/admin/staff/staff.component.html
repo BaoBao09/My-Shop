@@ -1,0 +1,190 @@
+<div class="container-fluid">
+  <h5 class="card-title fw-semibold mb-4">Quản Lý Nhân Viên</h5>
+  <div class="card">
+      <div class="card-body">
+          <form [formGroup]="formsearch">
+              <div class="row">
+                  <div class=" col-lg-6">
+                      <div class="">
+                          <label for="tenKh" class="form-label">Tên khách hàng</label>
+                          <input formControlName="hoTen" style="background-color: #fff;" type="text"
+                              class="form-control" id="tenSP">
+                      </div>
+                  </div>
+                  <div class=" col-lg-6">
+                      <div class="">
+                          <label for="tenSP" class="form-label">Email</label>
+                          <input formControlName="email" style="background-color: #fff;" type="text"
+                              class="form-control" id="tenSP">
+                      </div>
+                  </div>
+              </div>
+          </form>
+          <button class="btn btn-primary btn-seach" (click)="search()">Tìm Kiếm</button>
+      </div>
+
+  </div>
+  <div class="pull-right no-margin">
+      <a (click)="createModal()" class="btn btn-success btn-xs">
+          <i class="fa fa-plus"></i>&nbsp;Thêm
+      </a>
+  </div>
+  <div class="row" style="clear: both;">
+      <div class="col-lg-12 d-flex align-items-stretch">
+          <div class="card w-100">
+              <div class="card-body p-4">
+                  <div class="table-responsive">
+                      <table class="table text-nowrap mb-0 align-middle">
+                          <thead class="text-dark fs-4">
+                              <tr>
+                                  <th class="border-bottom-0">
+                                      <h6 class="fw-semibold mb-0">STT</h6>
+                                  </th>
+                                  <th class="border-bottom-0">
+                                      <h6 class="fw-semibold mb-0">Họ Tên</h6>
+                                  </th>
+                                  <th class="border-bottom-0">
+                                      <h6 class="fw-semibold mb-0">Email</h6>
+                                  </th>
+                                  <th class="border-bottom-0">
+                                      <h6 class="fw-semibold mb-0">Quyền</h6>
+                                  </th>
+                                  <th class="border-bottom-0">
+                                    <h6 class="fw-semibold mb-0">Avatar</h6>
+                                  </th>
+                                  <th class="border-bottom-0" style="width: 160px;">
+                                      <h6 class="fw-semibold mb-0">Tác vụ</h6>
+                                  </th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let item of items; let i = index">
+                                  <td class="border-bottom-0">
+                                      <h6 class="fw-semibold mb-0">{{ i + 1 }}</h6>
+                                  </td>
+                                  <td class="border-bottom-0">
+                                      <h6 class="fw-semibold mb-1">{{item.hoTen}}</h6>
+                                  </td>
+                                  <td class="border-bottom-0">
+                                      <p class="mb-0 fw-normal">{{item.email}}</p>
+                                  </td>
+                                  <td class="border-bottom-0">
+                                      <p class="mb-0 fw-normal">{{item.quyen}}</p>
+                                  </td>
+                                  <td class="border-bottom-0">
+                                    <img  src="{{loadImage(item.avatar)}}" alt="" srcset="">
+                                  </td>
+                                  <td class="border-bottom-0">
+                                      <div class="row">
+                                          <div class="col-lg-6">
+                                              <button (click)="updateModal(item)"
+                                                  class="badge bg-primary rounded-3 fw-semibold">Sửa</button>
+                                          </div>
+                                          <div class="col-lg-6">
+                                              <button (click)="deleteModal(item.id)"
+                                                  class="badge bg-danger rounded-3 fw-semibold">Xóa</button>
+                                          </div>
+                                      </div>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+              <ngb-pagination [collectionSize]="totalItems" [(page)]="currentPage" [pageSize]="5" [maxSize]="5"
+                  class="pagination-ct" (pageChange)="loadPage($event)">
+              </ngb-pagination>
+          </div>
+      </div>
+  </div>
+  <div *ngIf="showUpdateModal" id="createUserModal" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-sl full-height-modal">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h4 *ngIf="isCreate" class="modal-title">Nhập thông tin nhân viên</h4>
+                  <h4 *ngIf="!isCreate" class="modal-title">Sửa thông tin nhân viên</h4>
+              </div>
+              <form class="modal-form" [formGroup]="formdata">
+                  <div class="row">
+                      <div class=" col-lg-4">
+                          <div class="">
+                              <label for="hoTen" class="form-label">Tên nhân viên(<span
+                                      style="color: red;">*</span>)</label>
+                              <input type="text" id="hoTen" formControlName="hoTen" class="form-control">
+                              <div *ngIf="formdata.get('hoTen').invalid && formdata.get('hoTen').touched"
+                                  class="invalid-form">
+                                  <div *ngIf="formdata.get('hoTen').errors.required">Tên là bắt buộc.</div>
+                              </div>
+                          </div>
+                          <div class="">
+                              <label for="ngaySinh" class="form-label">Ngày sinh</label>
+                              <input type="date" id="ngaySinh" formControlName="ngaySinh" class="form-control">
+                          </div>
+                          <div class="">
+                              <label for="sdt" class="form-label">Số Điện Thoại</label>
+                              <input type="text" id="" formControlName="soDT" class="form-control">
+                          </div>
+                      </div>
+                      <div class="col-lg-4">
+                          <div class="">
+                              <label for="exampleInputPassword1" class="form-label">Email(<span
+                                      style="color: red;">*</span>)</label>
+                              <input type="email" formControlName="email" class="form-control" />
+                              <div *ngIf="formdata.get('email').invalid && formdata.get('email').touched"
+                                  class="invalid-form">
+                                  <div *ngIf="formdata.get('email').errors.required">Email là bắt buộc.</div>
+                              </div>
+                          </div>
+                           <form class="">
+                              <label for="quyen" class="form-label">Quyền</label>
+                              <select id="quyen" formControlName="quyen" class="form-select">
+                                  <option value="1">admin</option>
+                                  <option value="2">customer</option>
+                              </select>
+                          </form>
+                      </div>
+                      <div class="col-lg-4">
+                          <div class="">
+                            <label for="tenNh" class="form-label">Tên ngân hàng</label>
+                            <input type="text" id="" formControlName="tenNh" class="form-control">
+                          </div>
+                          <div class="">
+                            <label for="soTk" class="form-label">Số tài khoản</label>
+                            <input type="text" id="" formControlName="soTk" class="form-control">
+                          </div>
+                          <div class="" [formGroup]="formdata">
+                            <label for="sdt" class="form-label">Avatar</label>
+                            <input type="file" id="" #fileInput formControlName="avatar" class="form-control">
+                        </div>
+                      </div>
+                  </div>
+              </form>
+              <div class="modal-footer">
+                  <div class="modal-btn">
+                      <button class="btn btn-danger" (click)="closeModal('createUserModal')">Hủy</button>
+                      <button class="btn btn-primary" (click)="onSubmit(formdata.value, 'createUserModal')">Xác
+                          nhận</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="modal fade" id="confirmDeleteModal" role="dialog">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="confirmDeleteModalLabel">Xác nhận xóa</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  Bạn có chắc chắn muốn xóa không?
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                  <button type="button" class="btn btn-danger" (click)="confirmDelete()">Xóa</button>
+              </div>
+          </div>
+      </div>
+  </div>
+
+</div>

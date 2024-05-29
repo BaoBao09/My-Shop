@@ -16,7 +16,7 @@ export class CheckOutComponent {
   public formdata: any;
   public selectedAddress: any;
   public hdban: any;
-  public qr = "";
+  public qr = '';
   idDelete: any;
   idAddress: any;
   public isDeleteModal = true;
@@ -24,34 +24,23 @@ export class CheckOutComponent {
   ngOnInit(): void {
     this.khachHang = JSON.parse(localStorage.getItem('user')!);
     this.cart = JSON.parse(sessionStorage.getItem('cartPayment')!);
+
     if (this.khachHang) {
-      //this.loadData()
+      this.loadData();
       this.resetForm();
       this.hdban = new FormGroup({
-        //idKH : new FormControl(this.khachHang.id),
+        idKH: new FormControl(this.khachHang.id),
         idNV: new FormControl(0),
-        //idDiaChi : new FormControl(this.selectedAddress.id),
+        idDiaChi: new FormControl(0),
         ghiChu: new FormControl(''),
         khuyenMai: new FormControl(0),
         ngayTao: new FormControl(new Date().toJSON()),
-        //tongTien : new FormControl(this.cart.totalPayment),
-        tinhTrangDH: new FormControl(0),
-        trangThai: new FormControl(true),
-      });
-    } else {
-      //this.router.navigate(['/login', { queryParams: 'check-out' }]);
-      this.resetForm();
-      this.hdban = new FormGroup({
-        //idKH : new FormControl(this.khachHang.id),
-        idNV: new FormControl(0),
-        //idDiaChi : new FormControl(this.selectedAddress.id),
-        ghiChu: new FormControl(''),
-        khuyenMai: new FormControl(0),
-        ngayTao: new FormControl(new Date().toJSON()),
-        //tongTien : new FormControl(this.cart.totalPayment),
+        tongTien: new FormControl(this.cart.totalPayment),
         tinhTrangDH: new FormControl('11'),
         trangThai: new FormControl(true),
       });
+    } else {
+      this.router.navigate(['/login', { queryParams: 'check-out' }]);
     }
   }
   loadData() {
@@ -76,7 +65,7 @@ export class CheckOutComponent {
     this.isUpdateModal = false;
     this.formdata = new FormGroup({
       id: new FormControl(0),
-      //idKH: new FormControl(this.khachHang.id),
+      idKH: new FormControl(this.khachHang.id),
       nguoiNhan: new FormControl('', Validators.required),
       soDT: new FormControl('', Validators.required),
       diaChiNH: new FormControl('', Validators.required),
@@ -110,6 +99,7 @@ export class CheckOutComponent {
       });
     }
   }
+
   showDeleteModal(id) {
     this.idDelete = id;
     this.isDeleteModal = true;
@@ -121,8 +111,10 @@ export class CheckOutComponent {
     $('#confirmModal').modal('toggle');
   }
   confirmDelete() {
+    console.log(this.idDelete);
     this._api.delete('DiaChi/Delete?id=' + this.idDelete).subscribe((res) => {
       if (res.success) {
+        this.idDelete = 0;
         this.loadData();
       }
     });
@@ -131,11 +123,20 @@ export class CheckOutComponent {
   confirmSelect() {
     this.selectedAddress = this.idAddress;
     $(`#confirmModal`).modal('hide');
+    $(`#addressModal`).modal('hide');
   }
   handleCheckout(value) {
-    const date = new Date;
-    let code = ""+date.getDate()+date.getMonth()+date.getFullYear()+11;
-    value.ghiChu = value.ghiChu + "**"+code+"**"
+    const date = new Date();
+    let code =
+      '' +
+      date.getDate() +
+      date.getMonth() +
+      date.getFullYear() +
+      11 +
+      this.khachHang.id;
+    value.idDiaChi = this.selectedAddress.id;
+    value.ghiChu = value.ghiChu + '**' + code + '**';
+
     this._api.post('HDBan/Create', value).subscribe((res) => {
       if (res.success) {
         let cthdb;
@@ -159,10 +160,21 @@ export class CheckOutComponent {
           }
         });
         sessionStorage.removeItem('cartPayment');
-        this.qr = "https://localhost:7064/api/HDBan/CreatePayment?amout="+value.tongTien+"&info="+code;
+        if (value.tinhTrangDH == '12' || value.tinhTrangDH == 12) {
+          this.qr = 'https://localhost:7064/api/HDBan/CreatePayment?amout=' + value.tongTien + '&info=' + code;
+          $('#paymentmModal').modal('toggle');
+        }
+        else{
+          alert("Bạn đã đặt hàng thành công!")
+          this.router.navigate(['/']);
+        }
       }
     });
-    
+
     //this.router.navigate(['/']);
+  }
+  closePayment() {
+    $(`#paymentmModal`).modal('hide');
+    this.router.navigate(['/']);
   }
 }

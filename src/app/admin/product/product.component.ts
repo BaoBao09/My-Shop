@@ -29,8 +29,17 @@ export class ProductComponent {
   public categories: any;
   public id = 0;
   public sizes = ['S', 'M', 'L', 'XL'];
-  public colors = ['Trắng', 'Đen', 'Nâu', 'Vàng', 'Xám', 'Xanh','Hồng'];
-  public materials = ['Cotton', 'Vải thun', 'Kaki', 'Ruby', 'Lanh', 'Da PU','Jeans','Lụa mềm'];
+  public colors = ['Trắng', 'Đen', 'Nâu', 'Vàng', 'Xám', 'Xanh', 'Hồng'];
+  public materials = [
+    'Cotton',
+    'Vải thun',
+    'Kaki',
+    'Ruby',
+    'Lanh',
+    'Da PU',
+    'Jeans',
+    'Lụa mềm',
+  ];
   public labels = [
     'FELIE DRESS',
     'Fabuman',
@@ -42,6 +51,8 @@ export class ProductComponent {
     'MLB',
     'Shop của nhà',
     'KENCO',
+    'LADOS',
+    'TeeLap',
   ];
   public productDetails: Array<any> = [];
   public imageURL = '';
@@ -66,6 +77,7 @@ export class ProductComponent {
       pageSize: this.pageSize,
       tenSP: this.formsearch.value.tenSP,
       thuongHieu: this.formsearch.value.thuongHieu,
+      idloaiSP : 0
     };
     this._api.post('SanPham/Search', dataSearch).subscribe((res) => {
       this.items = res.data.data;
@@ -78,6 +90,7 @@ export class ProductComponent {
     this.pageSize = 5;
     var dataSearch = {
       page: this.page,
+      idloaiSP : 0,
       pageSize: this.pageSize,
       tenSP: this.formsearch.value.tenSP,
       thuongHieu: this.formsearch.value.thuongHieu,
@@ -149,7 +162,9 @@ export class ProductComponent {
     });
   }
   async addDetail(detail: any, addDetail) {
-    await this.uploadDetailImage(addDetail);
+    if (addDetail.files[0]) {
+      await this.uploadDetailImage(addDetail);
+    }
     detail.id = 0;
     detail.idSanPham = this.idSP;
     detail.trangThai = true;
@@ -196,7 +211,7 @@ export class ProductComponent {
     else {
       this._api.delete('ChiTietSP/Delete?id=' + id).subscribe((res) => {
         if (res.success) {
-          alert('Xóa thành công')
+          alert('Xóa thành công');
           this.productDetails.splice(i, 1);
         } else alert('Có lỗi xảy ra!');
       });
@@ -272,7 +287,6 @@ export class ProductComponent {
   async uploadDetailImage(fileInput) {
     this.imageURL = '';
     const file = fileInput.files![0];
-    console.log(fileInput.files);
 
     const formData = new FormData();
     formData.append('f', file);
