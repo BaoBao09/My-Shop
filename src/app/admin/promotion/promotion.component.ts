@@ -76,10 +76,10 @@ export class PromotionComponent {
     });
   }
   updateModal(item: any) {
-    const ngayADDate = new Date('2024-04-01T00:00:00');
+    const ngayADDate = new Date(item.ngayAD);
     ngayADDate.setDate(ngayADDate.getDate() + 1);
     const ngayADValue = ngayADDate.toISOString().split('T')[0];
-    const ngayKTDate = new Date('2024-04-01T00:00:00');
+    const ngayKTDate = new Date(item.ngayKT);
     ngayKTDate.setDate(ngayKTDate.getDate() + 1);
     const ngayKTValue = ngayKTDate.toISOString().split('T')[0];
     this.doneSetupForm = false;

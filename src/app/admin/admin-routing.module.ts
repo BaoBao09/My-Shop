@@ -8,6 +8,10 @@ import { CustomerComponent } from './customer/customer.component';
 import { AuthGuard, RoleGuard } from '../services/auth.guard';
 import { LoginComponent } from './login/login.component';
 import { Role } from '../model/role';
+import { StaffComponent } from './staff/staff.component';
+import { PromotionComponent } from './promotion/promotion.component';
+import { BillComponent } from './bill/bill.component';
+import { PostsComponent } from './posts/posts.component';
 
 const routes: Routes = [
   {
@@ -23,7 +27,10 @@ const routes: Routes = [
         data: { roles: [Role.Admin] },
       },
       { path: 'customer', component: CustomerComponent },
-      { path: 'customer', component: CustomerComponent },
+      { path: 'staff', component: StaffComponent },
+      { path: 'promotion', component: PromotionComponent },
+      { path: 'bill', component: BillComponent },
+      { path: 'posts', component: PostsComponent },
     ],
     canActivate: [AuthGuard],
   },

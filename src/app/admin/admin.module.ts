@@ -14,6 +14,11 @@ import { LoginComponent } from './login/login.component';
 import { CategoryComponent } from './category/category.component';
 import { CustomerComponent } from './customer/customer.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { StaffComponent } from './staff/staff.component';
+import { PromotionComponent } from './promotion/promotion.component';
+import { BillComponent } from './bill/bill.component';
+import { PostsComponent } from './posts/posts.component';
+import { ChartComponent } from './chart/chart.component';
 
 @NgModule({
   declarations: [
@@ -26,14 +31,19 @@ import { ReactiveFormsModule } from '@angular/forms';
     ProductComponent,
     LoginComponent,
     CategoryComponent,
-    CustomerComponent
+    CustomerComponent,
+    StaffComponent,
+    PromotionComponent,
+    BillComponent,
+    PostsComponent,
+    ChartComponent
   ],
   imports: [
     CommonModule,
     BrowserModule,
     AdminRoutingModule,
     NgbModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ]
 })
 export class AdminModule { }
