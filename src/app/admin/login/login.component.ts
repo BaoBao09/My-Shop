@@ -23,7 +23,7 @@ export class LoginComponent {
       username: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required),
     });
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/admin';
   }
   CheckLogin(obj) {
     if (this.formLogin.invalid) {
@@ -31,7 +31,7 @@ export class LoginComponent {
     }
     this.loading = true;
     console.log(this.returnUrl);
-    
+
     this.authenticationService
       .login(obj.username, obj.password)
       .pipe(first())

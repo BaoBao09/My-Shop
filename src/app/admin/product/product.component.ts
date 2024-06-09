@@ -273,7 +273,6 @@ export class ProductComponent {
     const fileInput =
       document.querySelector<HTMLInputElement>('input[type=file]')!;
     const file = fileInput.files![0];
-    console.log(fileInput.files);
 
     const formData = new FormData();
     formData.append('f', file);

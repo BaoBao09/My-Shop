@@ -86,7 +86,6 @@ export class CustomerComponent {
   updateModal(item: any) {
     const ngaySinhDate = new Date(item.ngaySinh);
     ngaySinhDate.setDate(ngaySinhDate.getDate() + 1);
-    console.log(item.ngaySinh);
     const ngaySinhValue = ngaySinhDate.toISOString().split('T')[0];
     this.doneSetupForm = false;
     this.showUpdateModal = true;
@@ -104,10 +103,18 @@ export class CustomerComponent {
       this.doneSetupForm = true;
     });
   }
+
   async onSubmit(obj, id) {
+    console.log(obj);
     this.submitted = true;
     if (this.formdata.invalid) {
       return;
+    }
+    if(obj.gioiTinh == "1") {
+      obj.gioiTinh = true;
+    }
+    else {
+      obj.gioiTinh = false;
     }
     if (this.isCreate) {
       obj.id = 0;

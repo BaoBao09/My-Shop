@@ -15,18 +15,25 @@ declare var $: any;
 })
 export class HomeComponent {
   public page: number = 1;
-  public pageSize: number = 8;
+  public pageSize: number = 4;
   public totalItems: number = 10;
   public currentPage = 1;
   public formsearch: any;
   constructor(private _api: ApiService) {}
   public categories : any;
+  public blogs : any;
   public products : any;
+  public productsnew : any
   ngOnInit(): void {
     this._api.get('SanPham/GetBestSeller').subscribe((res) => {
       this.products = res.data;
     });
-
+    this._api.get('SanPham/GetNews').subscribe((res) => {
+      this.productsnew = res.data
+    });
+    this._api.get('BaiViet/GetAll').subscribe((res) => {
+      this.blogs = res.data
+    });
     this.formsearch = new FormGroup({
       idloaiSP : new FormControl(0),
       page : new FormControl(this.page),

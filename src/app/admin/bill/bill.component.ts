@@ -27,29 +27,16 @@ export class BillComponent {
   public isUpdateDetail: boolean = false;
   public items: any;
   public bill: any;
-  public khachhangs: any;
   public id = 0;
-  public productDetails: Array<any> = [];
+  public order: any;
   public imageURL = '';
+  public staff;
   idSP: any;
   constructor(private _api: ApiService) {}
  async ngOnInit(): Promise<void> {
     this.formsearch = new FormGroup({
     });
-    this.khachhangs = (await this._api.get('KhachHang/GetAll').toPromise()).data
-    // this._api.get('HDBan/GetAll').subscribe((res) => {
-    //   if (res.success) {
-    //     this.bill = res.data;
-    //   }
-    // });
-
-
-
-    // this._api.get('KhachHang/GetAll').subscribe((res) => {
-    //   if (res.success) {
-    //     this.khachhangs = res.data;
-    //   }
-    // });
+    this.staff = JSON.parse(localStorage.getItem("staff")!)
     this.search();
   }
   loadPage(page: number) {
@@ -79,33 +66,43 @@ export class BillComponent {
       this.totalItems = res.data.totalItem;
     });
   }
-
-  updateModal(item: any) {
-    console.log(item);
-    this.idSP = item.id;
+  formatNote(obj : string){
+    let regex = /\b\d{9,10}\b/g;
+    var note = obj.match(regex);
+    return note;
+  }
+  async updateModal(item: any) {
     this.doneSetupForm = false;
     this.showUpdateModal = true;
     this.isCreate = false;
-    this.productDetails = item.cTSPhams;
+    this.order = item;
     setTimeout(async () => {
-      $('#createUserModal').modal('toggle');
       this.formdata = new FormGroup({
         id: new FormControl(item.id),
-        idloaiSP: new FormControl(item.idLoaiSP),
-        tenSP: new FormControl(item.tenSP, Validators.required),
-        moTa: new FormControl(item.moTa),
-        chatLieu: new FormControl(item.chatLieu),
-        thuongHieu: new FormControl(item.thuongHieu),
-        gia: new FormControl(item.gia),
-        hinhAnh: new FormControl(item.hinhAnh),
-        hinhAnh1: new FormControl(item.hinhAnh1),
+        idNV: new FormControl(this.staff.maNguoiDung),
+        tinhTrangDH: new FormControl(item.tinhTrangDH ? item.tinhTrangDH : 11),
+        email : new FormControl(item)
       });
-      this.productDetails = item.data;
+      $('#createUserModal').modal('toggle');
     });
   }
 
   async onSubmit(obj, id) {
+    this.order.tinhTrangDH = Number(obj.tinhTrangDH)
+    console.log(this.order.tinhTrangDH);
 
+    if(this.order.tinhTrangDH == 21){
+      await this._api.post('HDBan/SendMail?email='+this.order.email, this.order).subscribe((res) => {})
+    }
+    await this._api.put('HDBan/Update/'+this.order.id, this.order).subscribe(async (res) => {
+      if (res.success) {
+        alert('Sửa thông tin thành công');
+        this.closeModal(id)
+        this.search()
+      } else {
+        alert('Có lỗi xảy ra!');
+      }
+    });
   }
 
   deleteModal(id)
@@ -114,6 +111,16 @@ export class BillComponent {
     $('#confirmDeleteModal').modal('toggle');
   }
   confirmDelete() {
+    this._api.delete('HDBan/Delete/' + this.id).subscribe((res) => {
+      if (res.success) {
+        alert('Xóa thành công');
+        this.id = 0;
+        this.closeModal('confirmDeleteModal');
+        this.search();
+      } else {
+        alert('Có lỗi xảy ra!');
+      }
+    });
 
   }
   loadImage(url) {

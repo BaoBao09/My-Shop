@@ -157,7 +157,7 @@ export class ProductComponent {
       }
     } else {
       alert('Vui lòng đăng nhập để mua hàng!');
-      this.router.navigate(['/login', { queryParams: 'product/' + this.id }]);
+      this.router.navigate(['/login', { queryParams: 'product-details/' + this.id }]);
     }
   }
   loadImage(url) {
