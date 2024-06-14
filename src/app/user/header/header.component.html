@@ -33,16 +33,18 @@
     <div class="header__top">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 col-md-7">
+                <div style="height: 8px;" class="col-lg-6 col-md-7">
                     <div class="header__top__left">
                         <p>Miễn phí vận chuyển, đảm bảo hoàn trả hoặc hoàn tiền trong 30 ngày.</p>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-5">
                     <div class="header__top__right">
-                        <div class="header__top__links">
-                            <a href="/login">Đăng nhập</a>
-                            <a>FAQs </a>
+                        <div *ngIf="!isLOgin" class="header__top__links">
+                            <a routerLink="/login">Đăng nhập</a>
+                        </div>
+                        <div *ngIf="isLOgin" class="header__top__links">
+                            <a style="cursor: pointer;" (click)="logOut()">Đăng xuất</a>
                         </div>
                     </div>
                 </div>
@@ -61,7 +63,7 @@
                     <ul>
                         <li class="active"><a href="">Trang chủ</a></li>
                         <li><a href="/categories">Danh mục</a></li>
-                        <li><a href="#">Trang</a>
+                        <!-- <li><a href="#">Trang</a>
                             <ul class="dropdown">
                                 <li><a href="/about.html">About Us</a></li>
                                 <li><a href="/product-details">Chi tiết sản phẩm</a></li>
@@ -69,7 +71,7 @@
                                 <li><a href="/check-out">Thanh toán</a></li>
                                 <li><a href="./blog-details.html">Chi tiết bài viết</a></li>
                             </ul>
-                        </li>
+                        </li> -->
                         <li><a href="/blog">Bài viết</a></li>
                         <li><a href="/contact">Liên hệ</a></li>
                     </ul>
@@ -79,8 +81,7 @@
                 <div class="header__nav__option">
                     <a href="#" class="search-switch"><img src="assets/users/img/icon/search.png" alt=""></a>
                     <a href="#"><img src="assets/users/img/icon/heart.png" alt=""></a>
-                    <a href="#"><img src="assets/users/img/icon/cart.png" alt=""> <span>0</span></a>
-                    <div class="price">$0.00</div>
+                    <a href="/cart"><img src="assets/users/img/icon/cart.png" alt=""> <span></span></a>
                 </div>
             </div>
         </div>
@@ -88,3 +89,4 @@
     </div>
 </header>
 <!-- Header Section End -->
+

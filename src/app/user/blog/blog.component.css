@@ -1,0 +1,97 @@
+/* Đặt nền cho phần breadcrumb */
+.breadcrumb-blog {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 100px 0;
+  text-align: center;
+  color: #fff;
+}
+
+/* .breadcrumb-blog h2 {
+  font-size: 48px;
+  font-weight: 700;
+  text-transform: uppercase;
+} */
+
+
+.breadcrumb-blog::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Hiệu ứng overlay tối */
+  z-index: 1;
+}
+
+.breadcrumb-blog .container {
+  position: relative;
+  z-index: 2;
+}
+
+/* Blog Section Styles */
+.blog {
+  padding: 60px 0;
+}
+
+.blog__item {
+  margin-bottom: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.blog__item:hover {
+  transform: translateY(-5px);
+}
+
+.blog__item__pic {
+  position: relative;
+  overflow: hidden;
+  height: 250px;
+}
+
+.blog__item__pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+.blog__item__pic:hover img {
+  transform: scale(1.1);
+}
+
+.blog__item__text {
+  padding: 20px;
+  background-color: #fff;
+}
+
+.blog__item__text span {
+  display: block;
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 10px;
+}
+
+.blog__item__text h5 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.blog__item__text a {
+  display: inline-block;
+  font-size: 14px;
+  color: #ff5e14;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.blog__item__text a:hover {
+  color: #333;
+}

@@ -82,18 +82,25 @@ export class PostsComponent {
     setTimeout(() => {
       $('#createUserModal').modal('toggle');
       this.formdata = new FormGroup({
+        id : new FormControl(item.id),
         tieuDe: new FormControl(item.tieuDe),
         ngayViet : new FormControl(ngayVietValue),
-        hinhAnh : new FormControl(item.hinhAnh),
+        hinhAnh : new FormControl(item.hinhAnh? item.hinhAnh : ""),
       });
       this.doneSetupForm = true;
     });
   }
-  async onSubmit(obj, id) {
+  async onSubmit(obj, id, fileInput) {
     this.submitted = true;
     if (this.formdata.invalid) {
       return;
     }
+    if (fileInput.files[0]) {
+      await this.uploadDetailImage(fileInput);
+      obj.hinhAnh = this.imageURL;
+    }
+    console.log(obj);
+
     if (this.isCreate) {
       obj.id = 0;
       obj.trangThai = true;
@@ -140,22 +147,6 @@ export class PostsComponent {
   closeModal(id: any) {
     $(`#${id}`).modal('hide');
   }
-  async uploadFile(id) {
-    this.imageURL = '';
-    const fileInput =
-      document.querySelector<HTMLInputElement>('input[type=file]')!;
-    const file = fileInput.files![0];
-    console.log(fileInput.files);
-
-    const formData = new FormData();
-    formData.append('f', file);
-    const res = await this._api
-      .uploadFile('File/Upload/Posts', formData)
-      .toPromise();
-    if (res.success) {
-      this.imageURL = res.data;
-    }
-  }
   async uploadDetailImage(fileInput) {
     this.imageURL = '';
     const file = fileInput.files![0];
@@ -163,15 +154,13 @@ export class PostsComponent {
     const formData = new FormData();
     formData.append('f', file);
     const res = await this._api
-      .uploadFile('File/Upload/Posts', formData)
+      .uploadFile('File/Upload/Post', formData)
       .toPromise();
     if (res.success) {
       this.imageURL = res.data;
     }
   }
   loadImage(url) {
-    console.log(url);
-
     return 'https://localhost:7064/api/File/ReadFile?path=' + url;
   }
 }

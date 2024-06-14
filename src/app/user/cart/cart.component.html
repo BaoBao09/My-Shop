@@ -39,7 +39,9 @@
                                     </div>
                                     <div class="product__cart__item__text">
                                         <h6>{{item.tenSP}}</h6>
-                                        <h5>{{item.gia | number: '1.0-0'}} VNĐ</h5>
+                                        <h5>Giá: {{item.gia | number: '1.0-0'}} đ</h5>
+                                        <h5>Size: {{item.size}}</h5>
+                                        <h5>Màu: {{item.mauSac}}</h5>
                                     </div>
                                 </td>
                                 <td class="quantity__item">
@@ -50,7 +52,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="cart__price">{{item.gia * item.soLuong | number: '1.0-0'}}</td>
+                                <td class="cart__price">{{item.gia * item.soLuong | number: '1.0-0'}} đ</td>
                                 <td class="cart__close">
                                     <i class="fa fa-close" (click)="deleteItem(item)"></i>
                                 </td>
@@ -77,11 +79,11 @@
                 <div class="cart__total">
                     <h6>Tổng</h6>
                     <ul>
-                        <li>Tạm tính: <span>{{total}}</span></li>
-                        <li>Khuyến mại: <span>{{total*discountPercent}}</span></li>
-                        <li>Tổng: <span>{{sumPayment()| number: '1.0-0'}}</span></li>
+                        <li>Tạm tính: <span>{{total | number: '1.0-0' }} đ</span></li>
+                        <li>Khuyến mại: <span>{{total*discountPercent | number: '1.0-0' }} đ</span></li>
+                        <li>Tổng: <span>{{sumPayment()| number: '1.0-0'}} đ</span></li>
                     </ul>
-                    <a style="color: #ffff;" class="primary-btn" (click)="handleCheckout()">Thanh Toán</a>
+                    <a style="color: #ffff; cursor: pointer;" class="primary-btn" (click)="handleCheckout()">Thanh Toán</a>
                 </div>
             </div>
         </div>

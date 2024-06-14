@@ -28,8 +28,8 @@ export class CustomerComponent {
   constructor(private _api: ApiService) {}
   ngOnInit(): void {
     this.formsearch = new FormGroup({
-      hoTen: new FormControl(),
-      email: new FormControl(),
+      hoTen: new FormControl(""),
+      email: new FormControl(""),
     });
 
     this.search();

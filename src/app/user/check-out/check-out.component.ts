@@ -40,7 +40,7 @@ export class CheckOutComponent {
         trangThai: new FormControl(true),
       });
     } else {
-      this.router.navigate(['/login', { queryParams: 'check-out' }]);
+      this.router.navigate(['/login', { queryParams: 'cart' }]);
     }
   }
   loadData() {
@@ -111,7 +111,6 @@ export class CheckOutComponent {
     $('#confirmModal').modal('toggle');
   }
   confirmDelete() {
-    console.log(this.idDelete);
     this._api.delete('DiaChi/Delete?id=' + this.idDelete).subscribe((res) => {
       if (res.success) {
         this.idDelete = 0;
@@ -129,6 +128,8 @@ export class CheckOutComponent {
     const date = new Date();
     let code =
       '' +
+      // date.getHours() +
+      // date.getMinutes() +
       date.getDate() +
       date.getMonth() +
       date.getFullYear() +

@@ -20,9 +20,10 @@ export class LoginComponent {
       password : new FormControl()
     });
     this.formSignUp = new FormGroup({
-      tenDN : new FormControl(),
-      email : new FormControl(),
-      matKhau : new FormControl()
+      tenDN : new FormControl(""),
+      hoTen: new FormControl(""),
+      email : new FormControl(""),
+      matKhau : new FormControl("")
     })
   }
   checkLogin(obj){
@@ -35,14 +36,21 @@ export class LoginComponent {
         localStorage.setItem("user", JSON.stringify(res.data))
         alert("Đăng nhập thành công!")
         var page = this.state.snapshot.params['queryParams'];
-        this.router.navigate(['/'+page]);
+        console.log(page);
+        if(page)
+          this.router.navigate(['/'+page]);
+        else
+          this.router.navigate(['/']);
+
       }
     });
   }
   checkSingUp(obj) {
     const form = {
       tenDN : obj.tenDN,
+      hoTen : obj.hoTen,
       email : obj.email,
+      gioiTinh : true,
       matKhau : obj.matKhau,
       trangThai : true,
     };

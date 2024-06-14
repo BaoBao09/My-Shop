@@ -2,8 +2,8 @@
   <div class="container">
     <div class="box">
       <div *ngIf="isLogin" class="form sign_in">
-        <h3>Sign In</h3>
-        <span>or use your account</span>
+        <h3>Đăng nhập</h3>
+        <span>hoặc sử dụng tài khoản của bạn</span>
 
         <div id="form_input">
           <div class="type" [formGroup]="formLogin">
@@ -14,52 +14,55 @@
           </div>
 
           <div class="forgot">
-            <span>Forgot your password?</span>
+            <span>Quên mật khẩu ?</span>
           </div>
 
-          <button class="btn bkg" (click)="checkLogin(formLogin.value)">Sign In</button>
+          <button class="btn bkg" (click)="checkLogin(formLogin.value)">Đăng nhập</button>
         </div>
       </div>
 
       <div *ngIf="!isLogin" class="form sign_in">
-        <h3>Sign Up</h3>
-        <span>or use your email for register</span>
+        <h3>Đăng ký</h3>
+        <span>hoặc sử dụng email của bạn để đăng ký</span>
 
         <div id="form_input">
-          <div class="type">
+          <div class="type" [formGroup]="formSignUp">
 
-            <input type="text" name="" placeholder="Name" id="name">
+            <input type="text" name="" placeholder="tenDN" formControlName="tenDN" id="name">
           </div>
-          <div class="type">
-
-            <input type="email" name="" placeholder="Email" id="email">
+          <div class="type" [formGroup]="formSignUp">
+            <input type="text" name="" placeholder="Name" formControlName="hoTen" id="name">
           </div>
-          <div class="type">
+          <div class="type" [formGroup]="formSignUp">
 
-            <input type="password" name="" placeholder="Password" id="password">
+            <input type="email" name="" placeholder="Email" formControlName="email" id="email">
+          </div>
+          <div class="type" [formGroup]="formSignUp">
+
+            <input type="password" name="" placeholder="Password" formControlName="matKhau" id="password">
           </div>
 
-          <button class="btn bkg">Sign Up</button>
+          <button class="btn bkg" (click)="checkSingUp(formSignUp.value)">Đăng ký</button>
         </div>
       </div>
     </div>
 
     <div class="overlay">
       <div *ngIf="isLogin" class="page page_signIn">
-        <h3>Welcome Back!</h3>
-        <p>To keep with us please login with your personal info</p>
+        <h3>Chào mừng trở lại!</h3>
+        <p>Để theo dõi chúng tôi, vui lòng đăng nhập bằng thông tin cá nhân của bạn</p>
 
         <button class="btn btnSign-in" (click)="checkFormSignUp()">
-          Sign Up <i class="bi bi-arrow-right"></i>
+          Đăng ký <i class="bi bi-arrow-right"></i>
         </button>
       </div>
 
       <div *ngIf="!isLogin" class="page page_signIn">
-        <h3>Hello Friend!</h3>
-        <p>Enter your personal details and start journey with us</p>
+        <h3>Chào bạn!</h3>
+        <p>Nhập thông tin cá nhân của bạn và bắt đầu hành trình với chúng tôi</p>
 
         <button class="btn btnSign-up" (click)="checkFormSignIn()">
-          <i class="bi bi-arrow-left"></i> Sign In</button>
+          <i class="bi bi-arrow-left"></i> Đăng ký</button>
       </div>
     </div>
   </div>

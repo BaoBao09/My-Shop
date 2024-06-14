@@ -6,7 +6,7 @@
         <div class="row">
           <div class="col-lg-6">
             <div>
-              <label for="tenSP" class="form-label">Tên Loại</label>
+              <label for="tenSP" class="form-label">Mã hóa đơn</label>
               <input formControlName="tenLoai" style="background-color: #fff;" type="text" class="form-control" id="tenSP">
             </div>
           </div>
@@ -28,16 +28,10 @@
                     <h6 class="fw-semibold mb-0">STT</h6>
                   </th>
                   <th class="border-bottom-0" style="width: 260px;">
-                    <h6 class="fw-semibold mb-0" >ID KH</h6>
-                  </th>
-                  <th class="border-bottom-0">
-                    <h6 class="fw-semibold mb-0">Ghi chú</h6>
+                    <h6 class="fw-semibold mb-0" >Tên Khách Hàng</h6>
                   </th>
                   <th class="border-bottom-0">
                     <h6 class="fw-semibold mb-0">Ngày tạo</h6>
-                  </th>
-                  <th class="border-bottom-0">
-                    <h6 class="fw-semibold mb-0">Khuyến mại</h6>
                   </th>
                   <th class="border-bottom-0">
                     <h6 class="fw-semibold mb-0">Tổng tiền</h6>
@@ -59,13 +53,7 @@
                     <h6 class="fw-semibold mb-1">{{ item.tenKH }}</h6>
                   </td>
                   <td class="border-bottom-0">
-                    <p class="mb-0 fw-normal">{{ formatNote(item.ghiChu) }}</p>
-                  </td>
-                  <td class="border-bottom-0">
                     <p class="mb-0 fw-normal">{{ item.ngayTao }}</p>
-                  </td>
-                  <td class="border-bottom-0">
-                    <p class="mb-0 fw-normal">{{ item.khuyenMai }}</p>
                   </td>
                   <td class="border-bottom-0">
                     <p class="mb-0 fw-normal">{{ item.tongTien | number: '1.0-0'}} đ</p>
@@ -78,9 +66,6 @@
                     <div class="row">
                       <div class="col-lg-6">
                         <button  class="badge bg-success rounded-3 fw-semibold" (click)="updateModal(item)">Chi tiết</button>
-                      </div>
-                      <div class="col-lg-6">
-                        <button (click)="deleteModal(item.id)" class="badge bg-danger rounded-3 fw-semibold">Xóa</button>
                       </div>
                     </div>
                   </td>
@@ -113,13 +98,17 @@
                           <label for="">{{order.ngayTao}}</label>
                         </div>
                         <div class="">
+                          <label for="hoTen" class="form-label">Mã xác nhận:</label><br>
+                          <label for="">{{formatNote(order.ghiChu)}}</label>
+                        </div>
+                        <div class="">
                           <label for="hoTen" class="form-label">Địa chỉ:</label><br>
                           <label for="">{{order.diaChi.nguoiNhan}} - {{order.diaChi.soDT}}</label><br>
                           <label for="">{{order.diaChi.diaChiNH}}</label>
                         </div>
                         <div class="">
                           <label for="gia" class="form-label">Tổng tiền</label>
-                          <label for="">{{order.tongTien}}</label>
+                          <label for="">{{order.tongTien | number: '1.0-0'}} đ</label>
                         </div>
                         <div class="" [formGroup]="formdata">
                             <label for="chatLieu" class="form-label">Tình trạng đơn hàng</label>

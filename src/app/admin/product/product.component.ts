@@ -44,15 +44,17 @@ export class ProductComponent {
     'FELIE DRESS',
     'Fabuman',
     'Minzee',
-    'Vans',
+    'JBAGY',
     'Zenkonu',
-    'Louis Vuitton',
+    '5sFashion',
     'OBITA',
     'MLB',
     'Shop của nhà',
     'KENCO',
     'LADOS',
     'TeeLap',
+    'The Bad God',
+    'Retro',
   ];
   public productDetails: Array<any> = [];
   public imageURL = '';
@@ -226,10 +228,10 @@ export class ProductComponent {
       obj.id = 0;
       obj.trangThai = true;
       await this.uploadFile(0);
-      console.log(this.imageURL);
       obj.hinhAnh1 = this.imageURL;
 
       await this._api.post('SanPham/Create', obj).subscribe((res) => {
+        console.log(obj);
         if (res.success) {
           alert('Thêm thành công');
           this.closeModal(id);

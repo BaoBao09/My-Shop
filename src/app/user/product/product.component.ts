@@ -64,6 +64,7 @@ export class ProductComponent {
     this.checkQuantity()
 
   }
+  //khi chọn size
   focusSize(item: string) {
     $('.size').removeClass('label-focused');
     // Thêm lớp 'label-focused' vào nhãn được chọn

@@ -11,6 +11,10 @@ import { NgForm, ReactiveFormsModule } from '@angular/forms';
 import { CheckOutComponent } from './check-out/check-out.component';
 import { LoginComponent } from './login/login.component';
 import { ProductComponent } from './product/product.component';
+import { SliderComponent } from './slider/slider.component';
+import { HomeComponent } from './home/home.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BlogComponent } from './blog/blog.component';
 
 
 
@@ -24,12 +28,17 @@ import { ProductComponent } from './product/product.component';
     CartComponent,
     CheckOutComponent,
     LoginComponent,
-    ProductComponent
+    ProductComponent,
+    SliderComponent,
+    HomeComponent,
+    BlogComponent
   ],
   imports: [
     CommonModule,
     UserRoutingModule,
     ReactiveFormsModule,
+    NgbModule,
+
   ]
 })
 export class UserModule { }

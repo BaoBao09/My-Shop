@@ -1,0 +1,13 @@
+label {
+  cursor: pointer;
+}
+
+.label-focused {
+  outline: 2px solid blue; /* Ví dụ: thêm đường viền xanh khi được focus */
+  /* Thêm các kiểu dáng khác nếu cần */
+}
+product__details__tab__content p{
+  font-weight: normal;
+}
+
+
